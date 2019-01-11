@@ -1,0 +1,10 @@
+{
+    "clusterName": "test",
+    "privileges": [
+        {
+            "permission":"CLUSTER.ADMINISTRATOR",
+            "type":"USER",
+            "name":"admin"
+        }
+    ]
+}

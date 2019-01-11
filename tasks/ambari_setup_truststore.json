@@ -1,0 +1,23 @@
+{
+  "description": "Setup truststore on Ambari server",
+  "input_method": "stdin",
+  "parameters": {
+    "truststore_type": {
+      "description": "Type of TrustStore (jks|jceks|pkcs12). Default to `jks`",
+      "type": "Optional[Enum[jks, jceks, pkcs12]]"
+    },
+    "truststore_path": {
+      "description": "Path of TrustStore",
+      "type": "String[1]"
+    },
+    "truststore_password": {
+      "description": "Password for TrustStore",
+      "type": "String[1]",
+      "sensitive": true
+    },
+    "truststore_reconfigure": {
+      "description": "Force to reconfigure TrustStore if exits. Default to true",
+      "type": "Optional[Boolean]"
+    }
+  }
+}

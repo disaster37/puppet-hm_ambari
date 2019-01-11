@@ -1,0 +1,35 @@
+{
+  "description": "Initializes Ambari server. You can also use it if you need to change database parameters",
+  "input_method": "stdin",
+  "parameters": {
+    "java_home": {
+      "description": "Use specified java_home.  Must be valid on all hosts",
+      "type": "Optional[String[1]]"
+    },
+    "db_type": {
+      "description": "Database to use embedded|oracle|mysql|mssql|postgres|sqlanywhere",
+      "type": "String[1]"
+    },
+    "db_host": {
+      "description": "Hostname of database server",
+      "type": "String[1]"
+    },
+    "db_port": {
+      "description": "Database port",
+      "type": "Optional[Integer[1]]"
+    },
+    "db_name": {
+      "description": "Database/Service name or ServiceID",
+      "type": "String[1]"
+    },
+    "db_user": {
+      "description": "Database user login",
+      "type": "String[1]"
+    },
+    "db_password": {
+      "description": "Database user password",
+      "type": "String[1]",
+      "sensitive": true
+    }
+  }
+}

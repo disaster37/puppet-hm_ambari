@@ -1,0 +1,13 @@
+---
+#Ambari Agent
+ambari::manage_repository: true
+ambari::repo_base_url: 'http://10.221.78.61:5080/ambari/ambari-2.6.1.5'
+ambari::ambari_server_hostname: 'puppet.test.local'
+ambari::ambari_agent_settings:
+  'security':
+    'force_https_protocol': 'PROTOCOL_TLSv1_2'
+ambari::hosts:
+    nodes0.hm.dm.ad:
+      ip: '127.0.0.1'
+    nodes1.hm.dm.ad:
+      ip: '127.0.0.1'

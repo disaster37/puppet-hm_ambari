@@ -1,0 +1,39 @@
+{
+  "description": "Permit to add new node on existing cluster that be deploy from blueprint Ambari",
+  "input_method": "stdin",
+  "parameters": {
+    "ambari_url": {
+      "description": "The Ambari URL. Default to `http://localhost:8080/api/v1`",
+      "type": "Optional[String[1]]"
+    },
+    "ambari_login": {
+      "description": "The Ambari login to connect on Ambari API. Default to `admin`",
+      "type": "Optional[String[1]]"
+    },
+    "ambari_password": {
+      "description": "The Ambari password to connect on Ambari API. Default to `admin`",
+      "type": "String[1]",
+      "sensitive": true
+    },
+    "cluster_name": {
+      "description": "The HDP cluster name where you should to add the new node",
+      "type": "String[1]"
+    },
+    "blueprint_name": {
+      "description": "The Blueprint name use to deploy the HDP cluster",
+      "type": "String[1]"
+    },
+    "hostname": {
+      "description": "The name of the new node. Per default, it's the node's FQDN",
+      "type": "String[1]"
+    },
+    "role": {
+      "description": "The Blueprint host_group to affect the new node",
+      "type": "String[1]"
+    },
+    "rack": {
+      "description": "The node rack for rack awerness",
+      "type": "Optional[String[1]]"
+    }
+  }
+}

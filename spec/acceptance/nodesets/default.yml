@@ -1,0 +1,26 @@
+HOSTS:
+  centos-7-x64:
+    platform: el-7-x86_64
+    hypervisor: docker
+    docker_cmd: '["/usr/sbin/init"]'
+    docker_image_commands:
+      - echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
+      - echo "export LANG=en_US.UTF-8" >> /root/.bashrc
+      - echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
+      - echo "export http_proxy=$http_proxy" >> /root/.bashrc
+      - echo "export https_proxy=$https_proxy" >> /root/.bashrc
+      - echo "export no_proxy=127.0.0.1,localhost,centos-7-x64" >> /root/.bashrc
+      - yum install -y crontabs tar wget openssl sysvinit-tools iproute which initscripts postgresql
+      - yum install -y postgresql-server postgresql-contrib sudo openssl
+      - systemctl mask getty@tty1.service
+    image: centos:7
+    docker_preserve_image: true
+    mount_folders:
+      module:
+        host_path: .
+        container_path: /etc/puppetlabs/code/modules/hm_ambari
+        opts: ro
+CONFIG:
+  type: foss
+  trace_limit: 1000
+#  log_level: verbose

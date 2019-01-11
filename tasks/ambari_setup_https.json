@@ -1,0 +1,23 @@
+{
+  "description": "Setup HTTPS for Ambari",
+  "input_method": "stdin",
+  "parameters": {
+    "api_ssl_port": {
+      "description": "Client API SSL port. Default to `8443`",
+      "type": "Optional[Integer[1]]"
+    },
+    "cert_path": {
+      "description": "Path to Certificate (import)",
+      "type": "String[1]"
+    },
+    "key_path": {
+      "description": "Path to Private Key (import)",
+      "type": "String[1]",
+      "sensitive": true
+    },
+    "cert_alias": {
+      "description": "Alias for the imported certificate. Default to `ambari`",
+      "type": "Optional[String[1]]"
+    }
+  }
+}

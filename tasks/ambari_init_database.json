@@ -1,0 +1,31 @@
+{
+  "description": "Initializes Ambari server database. Use only one time",
+  "input_method": "stdin",
+  "parameters": {
+    "db_type": {
+      "description": "Database to use embedded|oracle|mysql|mssql|postgres|sqlanywhere",
+      "type": "String[1]"
+    },
+    "db_host": {
+      "description": "Hostname of database server",
+      "type": "String[1]"
+    },
+    "db_port": {
+      "description": "Database port",
+      "type": "Optional[Integer[1]]"
+    },
+    "db_name": {
+      "description": "Database/Service name or ServiceID",
+      "type": "String[1]"
+    },
+    "db_user": {
+      "description": "Database user login",
+      "type": "String[1]"
+    },
+    "db_password": {
+      "description": "Database user password",
+      "type": "String[1]",
+      "sensitive": true
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "description": "Setup jdbc driver for Ambari",
+  "input_method": "stdin",
+  "parameters": {
+    "jdbc_driver_path": {
+      "description": "Specifies the path to the JDBC driver JAR file or archive with all required files(jdbc jar, libraries and etc), for the database type specified with the --jdbc-db option",
+      "type": "String[1]"
+    },
+    "jdbc_db": {
+      "description": "Specifies the database type [postgres|mysql|mssql|oracle|hsqldb|sqlanywhere] for the JDBC driver specified with the --jdbc-driver option",
+      "type": "String[1]"
+    }
+  }
+}

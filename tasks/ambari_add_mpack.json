@@ -1,0 +1,26 @@
+{
+  "description": "Add mpack on Ambari",
+  "input_method": "stdin",
+  "parameters": {
+    "mpack_file": {
+      "description": "Specify the path for management pack to be installed/upgraded",
+      "type": "Optional[String[1]]"
+    },
+    "mpack_url": {
+      "description": "Specify the url to download the mpack",
+      "type": "Optional[String[1]]"
+    },
+    "proxy_url": {
+      "description": "The proxy chain if you need download the mpack. For exemple https://proxy.domain.com:8080",
+      "type": "Optional[String[1]]"
+    },
+    "proxy_user": {
+      "description": "The proxy user if you need download the mpack",
+      "type": "Optional[String[1]]"
+    },
+    "proxy_password": {
+      "description": "The proxy password if you need download the mpack",
+      "type": "Optional[String[1]]"
+    }
+  }
+}

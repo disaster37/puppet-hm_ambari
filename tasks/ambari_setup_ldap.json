@@ -1,0 +1,105 @@
+{
+  "description": "Setup LDAP integration on Ambari server",
+  "input_method": "stdin",
+  "parameters": {
+    "ldap_type": {
+      "description": "select the type of LDAP you want to use (AD, IPA, Generic LDAP). Default is `AD`",
+      "type": "Enum['AD', 'IPA', 'Generic']"
+    },
+    "ldap_url": {
+      "description": "Primary url for LDAP. For exemple `dc.domain.com:389`",
+      "type": "String[1]"
+    },
+    "ldap_secondary_url": {
+      "description": "Secondary url for LDAP. For exemple `dc2.domain.com:389`",
+      "type": "Optional[String[1]]"
+    },
+    "ldap_ssl": {
+      "description": "Use SSL [true/false] for LDAP. Default to `false`",
+      "type": "Optional[Enum['true', 'false']]"
+    },
+    "ldap_user_class": {
+      "description": "User Attribute Object Class for LDAP. Default to `person`",
+      "type": "Optional[String[1]]"
+    },
+    "ldap_user_attr": {
+      "description": "User Attribute Name for LDAP. Default to `sAMAccountName`",
+      "type": "Optional[String[1]]"
+    },
+    "ldap_group_class": {
+      "description": "Group Attribute Object Class for LDAP. Default to `group`",
+      "type": "Optional[String[1]]"
+    },
+    "ldap_group_attr": {
+      "description": "Group Attribute Name for LDAP. Default to `cn`",
+      "type": "Optional[String[1]]"
+    },
+    "ldap_member_attr": {
+      "description": "Group Membership Attribute Name for LDAP. Default to `member`",
+      "type": "Optional[String[1]]"
+    },
+    "ldap_dn": {
+      "description": "Distinguished name attribute for LDAP. Default to `distunguishedName`",
+      "type": "Optional[String[1]]"
+    },
+    "ldap_base_dn": {
+      "description": "Base DN for LDAP. For exemple DC=DOMAIN,DC=COM",
+      "type": "String[1]"
+    },
+    "ldap_referral": {
+      "description": "Referral method [follow/ignore] for LDAP. Default to `follow`",
+      "type": "Optional[Enum[follow, ignore]]"
+    },
+    "ldap_bind_anonym": {
+      "description": "Bind anonymously [true/false] for LDAPP. Default to `false`",
+      "type": "Optional[Enum['true', 'false']]"
+    },
+    "ldap_manager_dn": {
+      "description": "Manager DN for LDAP",
+      "type": "String[1]"
+    },
+    "ldap_manager_password": {
+      "description": "Manager Password For LDAP",
+      "type": "String[1]",
+      "sensitive": true
+    },
+    "ldap_save_settings": {
+      "description": "Save without review for LDAP. Default to true",
+      "type": "Optional[Boolean]"
+    },
+    "ldap_collision": {
+      "description": "Handling behavior for username collisions [convert/skip] for LDAP sync. Default to `convert`",
+      "type": "Optional[Enum[convert, skip]]"
+    },
+    "ldap_lowercase": {
+      "description": "Declares whether to force the ldap user name to be lowercase or leave as-is",
+      "type": "Optional[Boolean]"
+    },
+    "ldap_pagination": {
+      "description": "Determines whether results from LDAP are paginated when requested",
+      "type": "Optional[Boolean]"
+    },
+    "admin_user": {
+      "description": "Ambari administrator username for accessing Ambari's REST API. Default to `admin`",
+      "type": "Optional[String]"
+    },
+    "admin_password": {
+      "description": "Ambari administrator password for accessing Ambari's REST API",
+      "type": "String[1]",
+      "sensitive": true
+    },
+    "truststore_type": {
+      "description": "Type of TrustStore (jks|jceks|pkcs12). Default to `jks`",
+      "type": "Optional[Enum[jks, jceks, pkcs12]]"
+    },
+    "truststore_path": {
+      "description": "Path of TrustStore",
+      "type": "Optional[String[1]]"
+    },
+    "truststore_password": {
+      "description": "Password for TrustStore",
+      "type": "Optional[String[1]]",
+      "sensitive": true
+    }
+  }
+}

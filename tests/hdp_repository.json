@@ -1,0 +1,42 @@
+{
+    "stackName" : "HDP",
+    "stackVersion" : "2.6",
+    "name" : "HDP-2.6.5.0",
+    "version": "2.6.5.0-292",
+    "operatingSystems": [
+        {
+            "osName" : "redhat7",
+            "repositories" : [
+                {
+                    "repositoryName":"HDP",
+                    "repositoryId":"HDP-2.6.5.0",
+                    "repositoryBaseUrl":"http://public-repo-1.hortonworks.com/HDP/centos7/2.x/updates/2.6.5.0"
+                    
+                },
+                {
+                    "repositoryName":"HDP-UTILS",
+                    "repositoryId":"HDP-UTILS-1.1.0.22",
+                    "repositoryBaseUrl":"http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.22/repos/centos7"
+                    
+                },
+                {
+                    "repositoryName":"HDP-GPL",
+                    "repositoryId":"HDP-GPL-2.6.5.0",
+                    "repositoryBaseUrl":"http://public-repo-1.hortonworks.com/HDP-GPL/centos7/2.x/updates/2.6.5.0"
+                },
+                {
+                    "repositoryName":"HDP-SOLR",
+                    "repositoryId":"HDP-SOLR-3.0.0-100",
+                    "repositoryBaseUrl":"http://public-repo-1.hortonworks.com/HDP-SOLR-3.0.0-100/repos/centos7"
+                    
+                },
+                {
+                    "repositoryName":"HDP-UTILS-GPL",
+                    "repositoryId":"HDP-UTILS-GPL-1.1.0.22",
+                    "repositoryBaseUrl":"http://public-repo-1.hortonworks.com/HDP-UTILS-GPL-1.1.0.22/repos/centos7"
+                    
+                }
+            ]
+        }
+    ]
+}

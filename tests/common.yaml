@@ -1,0 +1,721 @@
+---
+#Ambari Agent
+ambari::manage_repository: true
+ambari::repo_base_url: 'http://10.221.78.61:5080/ambari/ambari-2.6.1.5'
+ambari::ambari_server_hostname: 'puppet.test.local'
+ambari::ambari_agent_settings:
+    'security':
+      'force_https_protocol': 'PROTOCOL_TLSv1_2'
+ambari::hosts:
+    node.test.local:
+      ip: '192.168.1.1'
+
+#Ambari Server
+ambari::enable_encrypt_password: true
+ambari::master_key: 'secret_key'
+ambari::ambari_admin_password: 'admin'
+ambari::db_user: 'ambari'
+ambari::db_password: 'ambari'
+ambari::db_name: 'ambari'
+ambari::db_host: 'db'
+ambari::enable_ldap: true
+ambari::ldap_url: 'dcn37cti2.hm.dm.ad:389'
+ambari::ldap_base_dn: 'DC=HM,DC=DM,DC=AD'
+ambari::ldap_user: 'CN=cs.apphwksdev,OU=Services,DC=HM,DC=DM,DC=AD'
+ambari::ldap_password: 'Yb9cXeKuZdh.i2'
+ambari::ldap_groups_access:
+    - 'hm_etl_outils'
+ambari::ambari_server_settings:
+  ambari.post.user.creation.hook.enabled: true
+  ambari.post.user.creation.hook: '/var/lib/ambari-server/resources/scripts/post-user-creation-hook.sh'
+  authentication.ldap.username.forceLowercase: true
+  server.startup.web.timeout: 120
+ambari::mpacks_url:
+    - 'http://public-repo-1.hortonworks.com/HDP-SOLR/hdp-solr-ambari-mp/solr-service-mpack-3.0.0.tar.gz'
+ambari::cluster_name: 'nemodatahubqua'
+ambari::hdp_version: '2.6'
+ambari::manage_hdp_repository: true
+ambari::hdp_repository:
+  name: 'HDP-2.6.4.0'
+  version: '2.6.4.0-91'
+  spacewalk: false
+  repositories:
+    - repositoryName: 'HDP'
+      repositoryId: 'HDP-2.6.4.0'
+      repositoryBaseUrl: 'http://10.221.78.61:5080/hdp/HDP-2.6.4.0'
+    - repositoryName: 'HDP-UTILS'
+      repositoryId: 'HDP-UTILS-1.1.0.22'
+      repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-utils/HDP-UTILS-1.1.0.22'
+    - repositoryName: 'HDP-GPL'
+      repositoryId: 'HDP-GPL-2.6.4.0'
+      repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-gpl/HDP-GPL-2.6.4.0'
+    - repositoryName: 'HDP-SOLR'
+      repositoryId: 'HDP-SOLR-2.6-100'
+      repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-search/HDP-SOLR-2.6-100'
+    - repositoryName: 'HDP-UTILS-GPL'
+      repositoryId: 'HDP-UTILS-GPL-1.1.0.22'
+      repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-utils-gpl/HDP-UTILS-GPL-1.1.0.22'
+ambari::manage_permission: true
+ambari::permissions_mapping:
+    - permission: 'CLUSTER.ADMINISTRATOR'
+      type: 'GROUP'
+      name: 'hm_etl_outils'
+ambari::auto_deploy_cluster: true
+ambari::cluster_host_groups:
+    - name: 'services'
+      hosts:
+        - fqdn: 'puppet.test.local'
+          rack_info: '/azure/rack1'
+ambari::cluster_stack_hosts:
+    - name: 'master0'
+      configurations: []
+      components:
+        - name: 'ZOOKEEPER_CLIENT'
+        - name: 'ZOOKEEPER_SERVER'
+        - name: 'INFRA_SOLR_CLIENT'
+        - name: 'METRICS_MONITOR'
+        - name: 'NAMENODE'
+        - name: 'ZKFC'
+        - name: 'JOURNALNODE'
+        - name: 'HDFS_CLIENT'
+        - name: 'HBASE_MASTER'
+        - name: 'PHOENIX_QUERY_SERVER'
+        - name: 'HBASE_CLIENT'
+        - name: 'YARN_CLIENT'
+        - name: 'RESOURCEMANAGER'
+        - name: 'MAPREDUCE2_CLIENT'
+        - name: 'SPARK2_THRIFTSERVER'
+        - name: 'LIVY2_SERVER'
+        - name: 'SPARK2_CLIENT'
+        - name: 'TEZ_CLIENT'
+        - name: 'HIVE_SERVER'
+        - name: 'HIVE_METASTORE'
+        - name: 'HIVE_CLIENT'
+        - name: 'WEBHCAT_SERVER'
+        - name: 'HCAT'
+        - name: 'ATLAS_CLIENT'
+        - name: 'OOZIE_CLIENT'
+        - name: 'OOZIE_SERVER'
+        - name: 'PIG'
+        - name: 'SLIDER'
+        - name: 'HST_AGENT'
+      cardinality: '0'
+    - name: 'master1'
+      configurations: []
+      components:
+        - name: 'ZOOKEEPER_CLIENT'
+        - name: 'ZOOKEEPER_SERVER'
+        - name: 'INFRA_SOLR_CLIENT'
+        - name: 'METRICS_MONITOR'
+        - name: 'METRICS_GRAFANA'
+        - name: 'METRICS_COLLECTOR'
+        - name: 'HDFS_CLIENT'
+        - name: 'JOURNALNODE'
+        - name: 'HBASE_CLIENT'
+        - name: 'PHOENIX_QUERY_SERVER'
+        - name: 'YARN_CLIENT'
+        - name: 'APP_TIMELINE_SERVER'
+        - name: 'MAPREDUCE2_CLIENT'
+        - name: 'HISTORYSERVER'
+        - name: 'SPARK2_THRIFTSERVER'
+        - name: 'SPARK2_CLIENT'
+        - name: 'SPARK2_JOBHISTORYSERVER'
+        - name: 'LIVY2_SERVER'
+        - name: 'TEZ_CLIENT'
+        - name: 'HIVE_SERVER'
+        - name: 'HIVE_CLIENT'
+        - name: 'WEBHCAT_SERVER'
+        - name: 'HCAT'
+        - name: 'ATLAS_CLIENT'
+        - name: 'ATLAS_SERVER'
+        - name: 'OOZIE_CLIENT'
+        - name: 'OOZIE_SERVER'
+        - name: 'RANGER_ADMIN'
+        - name: 'RANGER_TAGSYNC'
+        - name: 'RANGER_USERSYNC'
+        - name: 'PIG'
+        - name: 'SLIDER'
+        - name: 'ACTIVITY_ANALYZER'
+        - name: 'ACTIVITY_EXPLORER'
+        - name: 'HST_SERVER'
+        - name: 'HST_AGENT'
+      cardinality: '0'
+    - name: 'master2'
+      configurations: []
+      components:
+        - name: 'ZOOKEEPER_CLIENT'
+        - name: 'ZOOKEEPER_SERVER'
+        - name: 'INFRA_SOLR_CLIENT'
+        - name: 'METRICS_MONITOR'
+        - name: 'NAMENODE'
+        - name: 'ZKFC'
+        - name: 'JOURNALNODE'
+        - name: 'HDFS_CLIENT'
+        - name: 'HBASE_CLIENT'
+        - name: 'HBASE_MASTER'
+        - name: 'PHOENIX_QUERY_SERVER'
+        - name: 'YARN_CLIENT'
+        - name: 'RESOURCEMANAGER'
+        - name: 'MAPREDUCE2_CLIENT'
+        - name: 'SPARK2_THRIFTSERVER'
+        - name: 'SPARK2_CLIENT'
+        - name: 'LIVY2_SERVER'
+        - name: 'TEZ_CLIENT'
+        - name: 'HIVE_SERVER'
+        - name: 'HIVE_METASTORE'
+        - name: 'HIVE_CLIENT'
+        - name: 'WEBHCAT_SERVER'
+        - name: 'HCAT'
+        - name: 'ATLAS_CLIENT'
+        - name: 'ATLAS_SERVER'
+        - name: 'OOZIE_CLIENT'
+        - name: 'PIG'
+        - name: 'SLIDER'
+        - name: 'HST_AGENT'
+      cardinality: '0'
+    - name: 'services'
+      configurations: []
+      components:
+        - name: 'ZOOKEEPER_CLIENT'
+        - name: 'METRICS_MONITOR'
+        - name: 'HDFS_CLIENT'
+        - name: 'HBASE_CLIENT'
+        - name: 'YARN_CLIENT'
+        - name: 'MAPREDUCE2_CLIENT'
+        - name: 'SPARK2_CLIENT'
+        - name: 'TEZ_CLIENT'
+        - name: 'HIVE_CLIENT'
+        - name: 'HCAT'
+        - name: 'KAFKA_BROKER'
+        - name: 'KNOX_GATEWAY'
+        - name: 'PIG'
+        - name: 'SLIDER'
+        - name: 'HST_AGENT'
+        - name: 'OOZIE_CLIENT'
+      cardinality: '1'
+    - name: 'ingests'
+      configurations: []
+      components:
+        - name: 'ZOOKEEPER_CLIENT'
+        - name: 'METRICS_MONITOR'
+        - name: 'HDFS_CLIENT'
+        - name: 'HBASE_CLIENT'
+        - name: 'YARN_CLIENT'
+        - name: 'MAPREDUCE2_CLIENT'
+        - name: 'SPARK2_CLIENT'
+        - name: 'TEZ_CLIENT'
+        - name: 'HIVE_CLIENT'
+        - name: 'HCAT'
+        - name: 'KAFKA_BROKER'
+        - name: 'PIG'
+        - name: 'SLIDER'
+        - name: 'HST_AGENT'
+        - name: 'OOZIE_CLIENT'
+      cardinality: '0'
+    - name: 'workers'
+      configurations: []
+      components:
+        - name: 'ZOOKEEPER_CLIENT'
+        - name: 'INFRA_SOLR'
+        - name: 'METRICS_MONITOR'
+        - name: 'DATANODE'
+        - name: 'HDFS_CLIENT'
+        - name: 'HBASE_CLIENT'
+        - name: 'HBASE_REGIONSERVER'
+        - name: 'YARN_CLIENT'
+        - name: 'NODEMANAGER'
+        - name: 'MAPREDUCE2_CLIENT'
+        - name: 'SPARK2_CLIENT'
+        - name: 'TEZ_CLIENT'
+        - name: 'HIVE_CLIENT'
+        - name: 'HCAT'
+        - name: 'PIG'
+        - name: 'SLIDER'
+        - name: 'SOLR_SERVER'
+        - name: 'HST_AGENT'
+      cardinality: '0'
+ambari::cluster_stack_configurations:
+    - 'ams-grafana-env':
+        properties:
+          'metrics_grafana_password': 'P@ssword$1234'
+    - 'hive-site':
+        properties:
+          'javax.jdo.option.ConnectionUserName': 'hive'
+          'javax.jdo.option.ConnectionPassword': 'hive'
+          'javax.jdo.option.ConnectionDriverName': 'org.postgresql.Driver'
+          'javax.jdo.option.ConnectionURL': 'jdbc:postgresql://master0.hm.dm.ad:5432/hive'
+          'hive.server2.enable.doAs': 'true'
+          'hive.default.fileformat.managed': 'ORC'
+          'hive.plan.serialization.format': 'kryo'
+          'hive.exec.compress.intermediate': 'true'
+          'hive.exec.compress.output': 'true'
+          'hive.merge.mapfiles': 'false'
+          'hive.server2.tez.initialize.default.sessions': 'true'
+    - 'hive-env':
+        properties:
+          'hive_database': 'Existing PostgreSQL Database'
+          'hive_database_name': 'hive'
+          'hive_database_type': 'postgres'
+    - 'oozie-env':
+        properties:
+          'oozie_database': 'Existing PostgreSQL Database'
+    - 'oozie-site':
+        properties:
+          'oozie.service.JPAService.jdbc.driver': 'org.postgresql.Driver'
+          'oozie.service.JPAService.jdbc.password': 'oozie'
+          'oozie.service.JPAService.jdbc.url': 'jdbc:postgresql://master0.hm.dm.ad:5432/oozie'
+          'oozie.service.JPAService.jdbc.username': 'oozie'
+          'oozie.zookeeper.connection.string': '%HOSTGROUP::master0%:2181,%HOSTGROUP::master1%:2181,%HOSTGROUP::master2%:2181'
+          'oozie.services.ext': 'org.apache.oozie.service.ZKLocksService,org.apache.oozie.service.ZKXLogStreamingService,org.apache.oozie.service.ZKJobsConcurrencyService'
+          'oozie.base.url': 'http://%HOSTGROUP::master1%:11000/oozie'
+    - 'admin-properties':
+        properties:
+          'SQL_CONNECTOR_JAR': '/usr/share/java/postgresql-jdbc.jar'
+          'DB_FLAVOR': 'POSTGRES'
+          'db_host': 'master0.hm.dm.ad'
+          'db_name': 'ranger'
+          'db_user': 'ranger'
+          'db_password': 'ranger'
+          'db_root_password': ''
+    - 'ranger-admin-site':
+        properties:
+          'ranger.jpa.jdbc.driver': 'org.postgresql.Driver'
+          'ranger.jpa.jdbc.url': 'jdbc:postgresql://master0.hm.dm.ad:5432/ranger'
+          'ranger.authentication.method': 'ACTIVE_DIRECTORY'
+          'ranger.ldap.ad.url': '{{ranger_ug_ldap_url}}'
+          'ranger.ldap.ad.bind.dn': '{{ranger_ug_ldap_bind_dn}}'
+          'ranger.ldap.ad.bind.password': 'Passw0rd.1234'
+          'ranger.ldap.ad.domain': 'HM'
+          'ranger.ldap.ad.user.searchfilter': 'sAMAccountName={0}'
+          'ranger.ldap.group.searchbase': 'dc=hm,dc=dm,dc=ad'
+          'ranger.ldap.ad.base.dn': 'dc=hm,dc=dm,dc=ad'
+          'ranger.ldap.ad.referral': 'follow'
+          'ranger.ldap.group.searchfilter': 'cn=hm_37cti00_dth*'
+    - 'ranger-env':
+        properties:
+          'ranger-hdfs-plugin-enabled': 'Yes'
+          'ranger-hbase-plugin-enabled': 'Yes'
+          'ranger-hive-plugin-enabled': 'Yes'
+          'ranger-knox-plugin-enabled': 'Yes'
+          'ranger-yarn-plugin-enabled': 'Yes'
+          'ranger-atlas-plugin-enabled': 'Yes'
+          'ranger-storm-plugin-enabled': 'No'
+          'ranger-kafka-plugin-enabled': 'No'
+          'ranger_admin_password': 'P@ssword$1234'
+          'xasecure.audit.destination.db': 'false'
+          'xasecure.audit.destination.solr': 'true'
+          'xasecure.audit.destination.hdfs': 'false'
+          'is_solrCloud_enabled': 'true'
+          'create_db_dbuser': 'false'
+          'is_nested_groupsync_enabled': 'false'
+    - 'ranger-ugsync-site':
+        properties:
+          'ranger.usersync.enabled': 'true'
+          'ranger.usersync.group.memberattributename': 'member'
+          'ranger.usersync.group.nameattribute': 'cn'
+          'ranger.usersync.group.objectclass': 'group'
+          'ranger.usersync.group.search.first.enabled': 'true'
+          'ranger.usersync.group.searchbase': 'dc=hm,dc=dm,dc=ad'
+          'ranger.usersync.group.searchenabled': 'true'
+          'ranger.usersync.group.searchfilter': '(cn=HM_37CTI00_DTH*)'
+          'ranger.usersync.group.usermapsyncenabled': 'true'
+          'ranger.usersync.ldap.binddn': 'CN=cs.apphwksq1,OU=Services,DC=HM,DC=DM,DC=AD'
+          'ranger.usersync.ldap.deltasync': 'true'
+          'ranger.usersync.ldap.groupname.caseconversion': 'lower'
+          'ranger.usersync.ldap.ldapbindpassword': 'Passw0rd.1234'
+          'ranger.usersync.ldap.referral': 'follow'
+          'ranger.usersync.ldap.searchBase': 'DC=HM,DC=DM,DC=AD'
+          'ranger.usersync.ldap.url': 'ldap://dc.hm.dm.ad:389'
+          'ranger.usersync.ldap.user.groupnameattribute': 'memberof, ismemberof'
+          'ranger.usersync.ldap.user.nameattribute': 'sAMAccountName'
+          'ranger.usersync.ldap.user.objectclass': 'user'
+          'ranger.usersync.ldap.user.searchbase': 'dc=hm,dc=dm,dc=ad'
+          'ranger.usersync.ldap.user.searchfilter': ''
+          'ranger.usersync.ldap.user.searchscope': 'sub'
+          'ranger.usersync.ldap.username.caseconversion': 'lower'
+          'ranger.usersync.source.impl.class': 'org.apache.ranger.ldapusersync.process.LdapUserGroupBuilder'
+          'ranger.usersync.user.searchenabled': 'true'
+    - 'knox-env':
+        properties:
+          'knox_master_secret': 'P@ssword$1234'
+    - 'topology':
+        properties:
+          'content': |
+                        <topology>
+                          <gateway>
+                            <provider>
+                              <role>authentication</role>
+                              <name>ShiroProvider</name>
+                              <enabled>true</enabled>
+                              <param>
+                                <name>sessionTimeout</name>
+                                <value>30</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm</name>
+                                <value>org.apache.hadoop.gateway.shirorealm.KnoxLdapRealm</value>
+                              </param>
+                              <param>
+                                <name>main.ldapContextFactory</name>
+                                <value>org.apache.hadoop.gateway.shirorealm.KnoxLdapContextFactory</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.contextFactory</name>
+                                <value>$ldapContextFactory</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.contextFactory.url</name>
+                                <value>ldap://dc.hm.dm.ad:389</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.contextFactory.systemUsername</name>
+                                <value>CN=cs.apphwksq1,OU=Services,DC=HM,DC=DM,DC=AD</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.contextFactory.systemPassword</name>
+                                <value>Passw0rd.1234</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.searchBase</name>
+                                <value>DC=HM,DC=DM,DC=AD</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.userSearchAttributeName</name>
+                                <value>sAMAccountName</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.userObjectClass</name>
+                                <value>person</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.authorizationEnabled</name>
+                                <value>true</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.groupSearchBase</name>
+                                <value>DC=HM,DC=DM,DC=AD</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.groupObjectClass</name>
+                                <value>group</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.groupIdAttribute</name>
+                                <value>sAMAccountName</value>
+                              </param>
+                              <param>
+                                <name>main.ldapRealm.memberAttribute</name>
+                                <value>member</value>
+                              </param>
+                              <param>
+                                <name>urls./**</name>
+                                <value>authcBasic</value>
+                              </param>
+                            </provider>
+                            <provider>
+                              <role>identity-assertion</role>
+                              <name>SwitchCase</name>
+                              <enabled>true</enabled>
+                              <param>
+                                <name>principal.case</name>
+                                <value>lower</value>
+                              </param>
+                              <param>
+                                <name>group.principal.case</name>
+                                <value>lower</value>
+                              </param>
+                            </provider>
+                            <provider>
+                              <role>identity-assertion</role>
+                              <name>Default</name>
+                              <enabled>true</enabled>
+                            </provider>
+                            <provider>
+                              <role>authorization</role>
+                              <name>XASecurePDPKnox</name>
+                              <enabled>true</enabled>
+                            </provider>
+                            <provider>
+                              <role>ha</role>
+                              <name>HaProvider</name>
+                              <enabled>true</enabled>
+                              <param>
+                                <name>WEBHDFS</name>
+                                <value>maxFailoverAttempts=3;failoverSleep=1000;maxRetryAttempts=300;retrySleep=1000;enabled=true</value>
+                              </param>
+                              <param>
+                                <name>HBASE</name>
+                                <value>maxFailoverAttempts=3;failoverSleep=1000;enabled=true</value>
+                              </param>
+                              <param>
+                                <name>HIVE</name>
+                                <value>maxFailoverAttempts=3;failoverSleep=1000;enabled=true;zookeeperEnsemble=nodes0.hm.dm.ad:2181,master0.hm.dm.ad:2181,nodes1.hm.dm.ad:2181;zookeeperNamespace=hiveserver2</value>
+                              </param>
+                              <param>
+                                <name>OOZIE</name>
+                                <value>maxFailoverAttempts=3;failoverSleep=1000;enabled=true</value>
+                              </param>
+                              <param>
+                                <name>WEBHCAT</name>
+                                <value>maxFailoverAttempts=3;failoverSleep=1000;enabled=true</value>
+                              </param>
+                            </provider>
+                            </gateway>
+                            <service>
+                              <role>NAMENODE</role>
+                              <url>hdfs://cluster</url>
+                            </service>
+                            <service>
+                              <role>JOBTRACKER</role>
+                              <url>rpc://nodes0.hm.dm.ad:{{jt_rpc_port}}</url>
+                              <url>rpc://nodes1.hm.dm.ad:{{jt_rpc_port}}</url>
+                            </service>
+                            <service>
+                              <role>WEBHDFS</role>
+                              {{webhdfs_service_urls}}
+                            </service>
+                            <service>
+                              <role>HDFSUI</role>
+                              <url>http://sr072755cti3700.hm.dm.ad:50070/webhdfs</url>
+                          </service>
+                            <service>
+                              <role>WEBHCAT</role>
+                              <url>http://nodes0.hm.dm.ad:{{templeton_port}}/templeton</url>
+                              <url>http://master0.hm.dm.ad:{{templeton_port}}/templeton</url>
+                              <url>http://nodes1.hm.dm.ad:{{templeton_port}}/templeton</url>
+                            </service>
+                            <service>
+                              <role>OOZIE</role>
+                              <url>http://nodes0.hm.dm.ad:{{oozie_server_port}}/oozie</url>
+                              <url>http://master0.hm.dm.ad:{{oozie_server_port}}/oozie</url>
+                            </service>
+                            <service>
+                              <role>WEBHBASE</role>
+                              <url>http://nodes0.hm.dm.ad:{{hbase_master_port}}</url>
+                              <url>http://nodes1.hm.dm.ad:{{hbase_master_port}}</url>
+                            </service>
+                            <service>
+                              <role>HIVE</role>
+                              <url>http://nodes0.hm.dm.ad:{{hive_http_port}}/{{hive_http_path}}</url>
+                              <url>http://nodes1.hm.dm.ad:{{hive_http_port}}/{{hive_http_path}}</url>
+                            </service>
+                            <service>
+                              <role>RESOURCEMANAGER</role>
+                              <url>http://nodes0.hm.dm.ad:{{rm_port}}/ws</url>
+                              <url>http://nodes1.hm.dm.ad:{{rm_port}}/ws</url>
+                            </service>
+                            <service>
+                              <role>DRUID-COORDINATOR-UI</role>
+                              {{druid_coordinator_urls}}
+                            </service>
+                            <service>
+                              <role>DRUID-COORDINATOR</role>
+                              {{druid_coordinator_urls}}
+                            </service>
+                            <service>
+                              <role>DRUID-OVERLORD-UI</role>
+                              {{druid_overlord_urls}}
+                            </service>
+                            <service>
+                              <role>DRUID-OVERLORD</role>
+                              {{druid_overlord_urls}}
+                            </service>
+                            <service>
+                              <role>DRUID-ROUTER</role>
+                              {{druid_router_urls}}
+                            </service>
+                            <service>
+                              <role>DRUID-BROKER</role>
+                              {{druid_broker_urls}}
+                            </service>
+                            <service>
+                              <role>ZEPPELINUI</role>
+                              {{zeppelin_ui_urls}}
+                            </service>
+                            <service>
+                              <role>ZEPPELINWS</role>
+                              {{zeppelin_ws_urls}}
+                            </service>
+                        </topology>
+    - 'core-site':
+        properties:
+          'fs.defaultFS': 'hdfs://cluster'
+          'hadoop.proxyuser.root.hosts': '*'
+          'hadoop.proxyuser.root.groups': '*'
+          'hadoop.http.staticuser.user': 'yarn'
+          'ha.zookeeper.quorum': '%HOSTGROUP::master0%:2181,%HOSTGROUP::master1%:2181,%HOSTGROUP::master2%:2181'
+          'fs.trash.interval': '4320'
+          'fs.protected.directories': '/,/mapred,/mapred/system,/tmp,/user,/user/apps,/user/apps/hbase,/user/apps/hbase/data,/user/apps/hive   /,/mapred,/mapred/system,/tmp,/user,/user/apps,/user/apps/hbase,/user/apps/hbase/data,/user/apps/hive   /,/apps/hbase,/apps/hbase/data,/apps/hive,/apps/hive/warehouse,/hdp,/hdp/apps,/mapred,/mapred/system,/tmp,/user,/user/apps,/user/apps/hbase,/user/apps/hbase/data,/user/apps/hive'
+    - 'hdfs-site':
+        properties:
+          'dfs.client.failover.proxy.provider.cluster': 'org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider'
+          'dfs.ha.automatic-failover.enabled': 'true'
+          'dfs.ha.fencing.methods': 'shell(/bin/true)'
+          'dfs.ha.namenodes.cluster': 'nn1,nn2'
+          'dfs.namenode.http-address': '%HOSTGROUP::master0%:50070'
+          'dfs.namenode.http-address.cluster.nn1': '%HOSTGROUP::master0%:50070'
+          'dfs.namenode.http-address.cluster.nn2': '%HOSTGROUP::master2%:50070'
+          'dfs.namenode.https-address': '%HOSTGROUP::master0%:50470'
+          'dfs.namenode.https-address.cluster.nn1': '%HOSTGROUP::master0%:50470'
+          'dfs.namenode.https-address.cluster.nn2': '%HOSTGROUP::master2%:50470'
+          'dfs.namenode.rpc-address.cluster.nn1': '%HOSTGROUP::master0%:8020'
+          'dfs.namenode.rpc-address.cluster.nn2': '%HOSTGROUP::master2%:8020'
+          'dfs.namenode.shared.edits.dir': 'qjournal://%HOSTGROUP::master0%:8485;%HOSTGROUP::master1%:8485;%HOSTGROUP::master2%:8485/cluster'
+          'dfs.nameservices': 'cluster'
+          'dfs.namenode.name.dir': '/data/hadoop/hdfs/namenode'
+          'dfs.datanode.data.dir': '/data/hadoop/hdfs/data'
+          'dfs.datanode.failed.volumes.tolerated': '0'
+          'dfs.namenode.safemode.threshold-pct': '0.99f'
+          'dfs.namenode.checkpoint.period': '3600'
+          'dfs.namenode.checkpoint.txns': '10000000'
+          'fs.permissions.umask-mode': '077'
+          'dfs.namenode.acls.enabled': 'false'
+    - 'yarn-site':
+        properties:
+          'hadoop.registry.rm.enabled': 'true'
+          'hadoop.registry.zk.quorum': '%HOSTGROUP::master0%:2181,%HOSTGROUP::master1%:2181,%HOSTGROUP::master2%:2181'
+          'yarn.log.server.url': 'http://%HOSTGROUP::master1%:19888/jobhistory/logs'
+          'yarn.resourcemanager.address': '%HOSTGROUP::master2%:8050'
+          'yarn.resourcemanager.address.rm1': '%HOSTGROUP::master0%:8050'
+          'yarn.resourcemanager.address.rm2': '%HOSTGROUP::master2%:8050'
+          'yarn.resourcemanager.admin.address': '%HOSTGROUP::master2%:8141'
+          'yarn.resourcemanager.admin.address.rm1': '%HOSTGROUP::master0%:8141'
+          'yarn.resourcemanager.admin.address.rm2': '%HOSTGROUP::master2%:8141'
+          'yarn.resourcemanager.cluster-id': 'yarn-cluster'
+          'yarn.resourcemanager.ha.automatic-failover.zk-base-path': '/yarn-leader-election'
+          'yarn.resourcemanager.ha.enabled': 'true'
+          'yarn.resourcemanager.ha.rm-ids': 'rm1,rm2'
+          'yarn.resourcemanager.hostname': '%HOSTGROUP::master2%'
+          'yarn.resourcemanager.recovery.enabled': 'true'
+          'yarn.resourcemanager.resource-tracker.address': '%HOSTGROUP::master2%:8025'
+          'yarn.resourcemanager.resource-tracker.address.rm1': '%HOSTGROUP::master0%:8025'
+          'yarn.resourcemanager.resource-tracker.address.rm2': '%HOSTGROUP::master2%:8025'
+          'yarn.resourcemanager.scheduler.address': '%HOSTGROUP::master2%:8030'
+          'yarn.resourcemanager.scheduler.address.rm1': '%HOSTGROUP::master0%:8030'
+          'yarn.resourcemanager.scheduler.address.rm2': '%HOSTGROUP::master2%:8030'
+          'yarn.resourcemanager.store.class': 'org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore'
+          'yarn.resourcemanager.webapp.address': '%HOSTGROUP::master2%:8088'
+          'yarn.resourcemanager.webapp.address.rm1': '%HOSTGROUP::master0%:8088'
+          'yarn.resourcemanager.webapp.address.rm2': '%HOSTGROUP::master2%:8088'
+          'yarn.resourcemanager.webapp.https.address': '%HOSTGROUP::master2%:8090'
+          'yarn.resourcemanager.webapp.https.address.rm1': '%HOSTGROUP::master0%:8090'
+          'yarn.resourcemanager.webapp.https.address.rm2': '%HOSTGROUP::master2%:8090'
+          'yarn.timeline-service.address': '%HOSTGROUP::master1%:10200'
+          'yarn.timeline-service.webapp.address': '%HOSTGROUP::master1%:8188'
+          'yarn.timeline-service.webapp.https.address': '%HOSTGROUP::master1%:8190'
+          'yarn.resourcemanager.hostname.rm1': '%HOSTGROUP::master0%'
+          'yarn.resourcemanager.hostname.rm2': '%HOSTGROUP::master2%'
+          'yarn.resourcemanager.zk-address': '%HOSTGROUP::master0%:2181,%HOSTGROUP::master1%:2181,%HOSTGROUP::master2%:2181'
+          'yarn.timeline-service.leveldb-state-store.path': '/var/hadoop/yarn/timeline'
+          'yarn.timeline-service.leveldb-timeline-store.path': '/var/hadoop/yarn/timeline'
+          'yarn.timeline-service.generic-application-history.save-non-am-container-meta-info': 'false'
+          'yarn.scheduler.minimum-allocation-mb': '4096'
+          'yarn.scheduler.maximum-allocation-mb': '12288'
+          'yarn.nodemanager.resource.memory-mb': '12288'
+          'yarn.nodemanager.local-dirs': '/data/hadoop/yarn/local'
+          'yarn.nodemanager.log-dirs': '/data/hadoop/yarn/log'
+          'yarn.nodemanager.localizer.cache.target-size-mb': '2048'
+          'yarn.nodemanager.localizer.cache.cleanup.interval-ms': '600000'
+    - 'capacity-scheduler':
+        properties:
+          'yarn.scheduler.capacity.queue-mappings': 'g:hm_37cti00_dthq01_usage:usg,u:cs.appdthq1:ing'
+          'yarn.scheduler.capacity.root.queues': 'default,datahub'
+          'yarn.scheduler.capacity.root.default.acl_submit_applications': '*'
+          'yarn.scheduler.capacity.root.default.capacity': '20'
+          'yarn.scheduler.capacity.root.default.maximum-capacity': '20'
+          'yarn.scheduler.capacity.root.default.priority': '0'
+          'yarn.scheduler.capacity.root.default.state': 'RUNNING'
+          'yarn.scheduler.capacity.root.default.user-limit-factor': '1'
+          'yarn.scheduler.capacity.root.datahub.acl_administer_queue': '*'
+          'yarn.scheduler.capacity.root.datahub.acl_submit_applications': '*'
+          'yarn.scheduler.capacity.root.datahub.capacity': '80'
+          'yarn.scheduler.capacity.root.datahub.maximum-capacity': '80'
+          'yarn.scheduler.capacity.root.datahub.minimum-user-limit-percent': '100'
+          'yarn.scheduler.capacity.root.datahub.priority': '0'
+          'yarn.scheduler.capacity.root.datahub.user-limit-factor': '1'
+          'yarn.scheduler.capacity.root.datahub.state': 'RUNNING'
+          'yarn.scheduler.capacity.root.datahub.queues': 'ing,usg'
+          'yarn.scheduler.capacity.root.datahub.ing.acl_administer_queue': '*'
+          'yarn.scheduler.capacity.root.datahub.ing.acl_submit_applications': '*'
+          'yarn.scheduler.capacity.root.datahub.ing.capacity': '40'
+          'yarn.scheduler.capacity.root.datahub.ing.maximum-capacity': '40'
+          'yarn.scheduler.capacity.root.datahub.ing.minimum-user-limit-percent': '100'
+          'yarn.scheduler.capacity.root.datahub.ing.ordering-policy': 'fair'
+          'yarn.scheduler.capacity.root.datahub.ing.ordering-policy.fair.enable-size-based-weight': 'false'
+          'yarn.scheduler.capacity.root.datahub.ing.priority': '0'
+          'yarn.scheduler.capacity.root.datahub.ing.state': 'RUNNING'
+          'yarn.scheduler.capacity.root.datahub.ing.user-limit-factor': '1'
+          'yarn.scheduler.capacity.root.datahub.usg.acl_administer_queue': '*'
+          'yarn.scheduler.capacity.root.datahub.usg.acl_submit_applications': '*'
+          'yarn.scheduler.capacity.root.datahub.usg.capacity': '60'
+          'yarn.scheduler.capacity.root.datahub.usg.maximum-capacity': '60'
+          'yarn.scheduler.capacity.root.datahub.usg.minimum-user-limit-percent': '100'
+          'yarn.scheduler.capacity.root.datahub.usg.ordering-policy': 'fair'
+          'yarn.scheduler.capacity.root.datahub.usg.ordering-policy.fair.enable-size-based-weight': 'false'
+          'yarn.scheduler.capacity.root.datahub.usg.priority': '0'
+          'yarn.scheduler.capacity.root.datahub.usg.state': 'RUNNING'
+          'yarn.scheduler.capacity.root.datahub.usg.user-limit-factor': '1'
+    - 'hbase-site':
+        properties:
+          'hbase.rootdir': 'hdfs://cluster/hbase'
+          'hbase.ipc.client.tcpnodelay': 'true'
+          'hbase.ipc.server.tcpnodelay': 'true'
+    - 'hbase-env':
+        properties:
+          'phoenix_sql_enabled': 'true'
+          'hbase_master_heapsize': '2048'
+    - 'application-properties':
+        properties:
+          'atlas.rest.address': 'http://%HOSTGROUP::master1%:21000,http://%HOSTGROUP::master2%:21000'
+          'atlas.server.ha.enabled': 'true'
+          'atlas.server.ids': 'id1,id2'
+          'atlas.server.address.id1': '%HOSTGROUP::master1%:21000'
+          'atlas.server.address.id2': '%HOSTGROUP::master2%:21000'
+          'atlas.server.bind.address': '%HOSTGROUP::master1%'
+          'atlas.authentication.method.ldap.type': 'ad'
+          'atlas.authentication.method.ldap.ad.url': 'ldap://dc.hm.dm.ad:389'
+          'atlas.authentication.method.ldap.ad.domain': 'HM'
+          'atlas.authentication.method.ldap.ad.base.dn': 'dc=hm,dc=dm,dc=ad'
+          'atlas.authentication.method.ldap.ad.bind.dn': 'CN=cs.apphwksq1,OU=Services,DC=HM,DC=DM,DC=AD'
+          'atlas.authentication.method.ldap.ad.bind.password': 'Passw0rd.1234'
+          'atlas.authentication.method.ldap.ad.referral': 'ignore'
+          'atlas.authentication.method.ldap.ad.user.searchfilter': '(&(objectclass=user)(sAMAccountName={0}))'
+          'atlas.authentication.method.ldap.default.role': 'ROLE_USER'
+    - 'tez-site':
+        properties:
+          'tez.task.am.heartbeat.interval-ms.max': '200'
+          'tez.task.scale.memory.enabled': 'true'
+          'tez.runtime.task.input.post-merge.buffer.percent': '0'
+    - 'hst-server-conf':
+        properties:
+          'customer.account.name': 'None'
+          'customer.smartsense.id': 'None'
+          'customer.notification.email': 'None'
+    - 'hadoop-env':
+        properties:
+          'namenode_heapsize': '4096m'
+          'namenode_opt_newsize': '4096m'
+          'namenode_opt_maxnewsize': '4096m'
+          'dtnode_heapsize': '4096m'
+    - 'mapred-site':
+        properties:
+          'mapreduce.map.memory.mb': '4096'
+          'mapreduce.map.java.opts': '-Xmx3276m'
+          'mapreduce.reduce.memory.mb': '4096'
+          'mapreduce.reduce.java.opts': '-Xmx3276m'
+          'yarn.app.mapreduce.am.resource.mb': '4096'
+          'yarn.app.mapreduce.am.command-opts': '-Xmx3276m -Dhdp.version=${hdp.version}'
+          'mapreduce.task.io.sort.mb': '1638'
+          'mapreduce.job.reduce.slowstart.completedmaps': '0.7'
+          'mapreduce.map.sort.spill.percent': '0.8'
+          'mapreduce.map.output.compress': 'true'
+          'mapreduce.output.fileoutputformat.compress': 'true'
+    - 'activity-zeppelin-shiro':
+        properties:
+          'users.admin': 'P@ssw0rd$1234'
+    - 'kafka-broker':
+        properties:
+          'log.dirs': '/data/kafka-logs/data'
+    - 'solr-hdfs':
+        properties:
+          'solr_hdfs_delete_write_lock_files': 'true'

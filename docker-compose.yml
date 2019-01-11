@@ -1,0 +1,33 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_PASSWORD=ambari
+      - POSTGRES_USER=ambari
+      - POSTGRES_DB=ambari
+    ports:
+      - "5432:5432"
+  puppet:
+    image: harbor.hm.dm.ad/puppet/puppet:develop
+    volumes:
+      - ./:$PWD
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ./tests:/hieradata
+      - ./:/etc/puppetlabs/code/modules/hm_ambari:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - http_proxy=${http_proxy}
+      - https_proxy=${https_proxy}
+      - no_proxy=127.0.0.1,.test.local,10.221.78.61
+      - FACTER_http_proxy=${http_proxy}
+      - FACTER_https_proxy=${https_proxy}
+    links:
+      - postgres:db
+    ports:
+      - "60101:8443"
+      - "60100:8080"
+    privileged: true
+    hostname: puppet
+    domainname: test.local
+    working_dir: $PWD

@@ -1,0 +1,19 @@
+{
+  "description": "Sync LDAP to provision user and group in Ambari",
+  "input_method": "stdin",
+  "parameters": {
+    "group_path": {
+      "description": "LDAP sync groups option.  Specifies the path to a CSV file of group names to be synchronized.",
+      "type": "String[1]"
+    },
+    "admin_user": {
+      "description": "Username for LDAP sync. Default to `admin`",
+      "type": "String[1]"
+    },
+    "admin_password": {
+      "description": "Password for LDAP sync",
+      "type": "String[1]",
+      "sensitive": true
+    }
+  }
+}

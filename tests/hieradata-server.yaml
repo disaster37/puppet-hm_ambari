@@ -1,0 +1,44 @@
+---
+#Ambari Server
+ambari::enable_encrypt_password: true
+ambari::master_key: 'secret_key'
+ambari::manage_repository: true
+ambari::repo_base_url: 'http://10.221.78.61:5080/ambari/ambari-2.6.1.5'
+ambari::ambari_admin_password: 'admin'
+ambari::db_user: 'ambari'
+ambari::db_password: 'ambari'
+ambari::db_name: 'ambari'
+ambari::db_host: 'db'
+ambari::enable_ldap: false
+ambari::ambari_server_settings:
+    ambari.post.user.creation.hook.enabled: true
+    ambari.post.user.creation.hook: '/var/lib/ambari-server/resources/scripts/post-user-creation-hook.sh'
+    authentication.ldap.username.forceLowercase: true
+    server.startup.web.timeout: 120
+ambari::mpacks_url:
+    - 'http://public-repo-1.hortonworks.com/HDP-SOLR/hdp-solr-ambari-mp/solr-service-mpack-3.0.0.tar.gz'
+ambari::cluster_name: 'nemodatahubqua'
+ambari::hdp_version: '2.6'
+ambari::manage_hdp_repository: true
+ambari::hdp_repository:
+    name: 'HDP-2.6.4.0'
+    version: '2.6.4.0-91'
+    spacewalk: false
+    repositories:
+      - repositoryName: 'HDP'
+        repositoryId: 'HDP-2.6.4.0'
+        repositoryBaseUrl: 'http://10.221.78.61:5080/hdp/HDP-2.6.4.0'
+      - repositoryName: 'HDP-UTILS'
+        repositoryId: 'HDP-UTILS-1.1.0.22'
+        repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-utils/HDP-UTILS-1.1.0.22'
+      - repositoryName: 'HDP-GPL'
+        repositoryId: 'HDP-GPL-2.6.4.0'
+        repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-gpl/HDP-GPL-2.6.4.0'
+      - repositoryName: 'HDP-SOLR'
+        repositoryId: 'HDP-SOLR-2.6-100'
+        repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-search/HDP-SOLR-2.6-100'
+      - repositoryName: 'HDP-UTILS-GPL'
+        repositoryId: 'HDP-UTILS-GPL-1.1.0.22'
+        repositoryBaseUrl: 'http://10.221.78.61:5080/hdp-utils-gpl/HDP-UTILS-GPL-1.1.0.22'
+ambari::manage_permission: false
+ambari::auto_deploy_cluster: false

@@ -1,0 +1,22 @@
+{
+  "configurations" : [],
+  "host_groups" : [
+      {
+          "name":"master",
+          "configurations":[],
+          "components":[
+              {
+                  "name":"ZOOKEEPER_CLIENT"
+              },
+              {
+                  "name":"ZOOKEEPER_SERVER"
+              }
+            ],
+            "cardinality":"1"
+      }
+  ],
+  "Blueprints" : {
+    "stack_name" : "HDP",
+    "stack_version" : "2.6"
+  }
+}
