@@ -869,6 +869,7 @@ docker-compose up -d
 docker-compose exec puppet bash
 r10k puppetfile install --puppetfile Puppetfile --moduledir /etc/puppetlabs/code/modules/
 puppet apply tests/site-server-default.pp
+puppet apply tests/site-agent-default.pp
 ```
 
 > if you need proxy do download yum package you need to set the proxy on /etc/yum.conf because of ambari not use environment variable http_proxy or https_proxy when it install yum package.
@@ -899,4 +900,27 @@ bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::ambari_setup 
   ldap_manager_dn=ldap_user\
   ldap_manager_password=ldap_password\
   admin_password=admin
+```
+
+##### hm_ambari::deploy_hdp
+
+```bash
+docker-compose exec puppet bash
+bolt task run --nodes localhost package name=krb5-workstation action=install
+bolt task run --nodes localhost package name=krb5-libs action=install
+bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::deploy_hdp --nodes localhost \
+  cluster_name=test\
+  repository_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_repository.json\
+  blueprint_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_blueprint.json\
+  host_template_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_hoststemplate.json\
+  privilege_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_privilege.json\
+  enable_kerberos=true\
+  kdc_type=mit-kdc\
+  kdc_hosts=kdc.test.local\
+  realm=TEST.LOCAL\
+  domains=test.local,.test.local\
+  admin_server_host=kdc.test.local\
+  principal_name=admin/admin@TEST.LOCAL\
+  principal_password=adminadmin\
+  disable_manage_krb5_conf=true
 ```
