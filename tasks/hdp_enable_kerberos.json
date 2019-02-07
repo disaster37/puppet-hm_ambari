@@ -1,0 +1,144 @@
+{
+  "description": "Permit to enable Kerberos on HDP from Ambari API",
+  "input_method": "stdin",
+  "parameters": {
+    "ambari_url": {
+      "description": "The Ambari URL. Default to `http://localhost:8080/api/v1`",
+      "type": "Optional[String[1]]"
+    },
+    "ambari_login": {
+      "description": "The Ambari login to connect on Ambari API. Default to `admin`",
+      "type": "Optional[String[1]]"
+    },
+    "ambari_password": {
+      "description": "The Ambari password to connect on Ambari API. Default to `admin`",
+      "type": "String[1]",
+      "sensitive": true
+    },
+    "cluster_name": {
+      "description": "The HDP cluster name where you should to enable kerberos",
+      "type": "String[1]"
+    },
+    "kdc_type": {
+      "description": "The kdc type to use (active-directory, mit-kdc or ipa) (default: 'active-directory')",
+      "type": "Optional[String[1]]"
+    },
+    "disable_manage_identities": {
+      "description": "Manage Kerberos principals and keytabs manually",
+      "type": "Optional[Boolean]"
+    },
+    "kdc_hosts": {
+      "description": "A comma separated list of KDC host. Optionnaly a port number may be included",
+      "type": "String[1]"
+    },
+    "realm": {
+      "description": "The default realm to use when creating service principal",
+      "type": "String[1]"
+    },
+    "ldap_url": {
+      "description": "The URL to Active Directory LDAP server. Only needed if the KDC type is Active Directory",
+      "type": "Optional[String[1]]"
+    },
+    "container_dn": {
+      "description": "The DN of the container used store service principals. Only needed if you use Active Directory",
+      "type": "Optional[String[1]]"
+    },
+    "domains": {
+      "description": "A comma separated list of domain names used to map server host names to the REALM name. It's optionnal",
+      "type": "Optional[String[1]]"
+    },
+    "admin_server_host": {
+      "description": "The host for KDC Kerberos administrative host. Optionnaly the port number can be included",
+      "type": "String[1]"
+    },
+    "principal_name": {
+      "description": "Admin principal used to create principals and export keytabs",
+      "type": "String[1]"
+    },
+    "principal_password": {
+      "description": "Admin principal password",
+      "type": "String[1]",
+      "sensitive": true
+    },
+    "persist_credential": {
+      "description": "Store admin credential. Need to enable password encryption before that",
+      "type": "Optional[Boolean]"
+    },
+    "disable_install_packages": {
+      "description": "Disable the installation of Kerberos client package",
+      "type": "Optional[Boolean]"
+    },
+    "executable_search_paths": {
+      "description": "A comma delimited list of search paths used to find Kerberos utilities (default: '/usr/bin, /usr/kerberos/bin, /usr/sbin, /usr/lib/mit/bin, /usr/lib/mit/sbin')",
+      "type": "Optional[String[1]]"
+    },
+    "encryption_type": {
+      "description": "The supported list of session key encryption types that should be returned by the KDC (default: 'aes des3-cbc-sha1 rc4 des-cbc-md5')",
+      "type": "Optional[String[1]]"
+    },
+    "password_length": {
+      "description": "The password length (default: 20)",
+      "type": "Optional[Integer]"
+    },
+    "password_min_lowercase_letters": {
+      "description": "The minimal lowercase letters to compose password (default: 1)",
+      "type": "Optional[Integer]"
+    },
+    "password_min_uppercase_letters": {
+      "description": "The minimal uppercase letters to compose password (default: 1)",
+      "type": "Optional[Integer]"
+    },
+    "password_min_digits": {
+      "description": "The minimal digits to compose password (default: 1)",
+      "type": "Optional[Integer]"
+    },
+    "password_min_punctuation": {
+      "description": "The minimal punctuation to compose password (default: 1)",
+      "type": "Optional[Integer]"
+    },
+    "password_min_whitespace": {
+      "description": "The minimal whitespace to compose password (default: 0)",
+      "type": "Optional[Integer]"
+    },
+    "check_principal_name": {
+      "description": "The principal name to use when executing Kerberos service check (default: '${cluster_name|toLower()}-${short_date}')",
+      "type": "Optional[String[1]]"
+    },
+    "enable_case_insensitive_username_rules": {
+      "description": "Force principal names to resolv to lowercase local usernames in auth-to-local rules",
+      "type": "Optional[Boolean]"
+    },
+    "disable_manage_auth_to_local": {
+      "description": "Don't manage the Hadoop auth-to-local rules by Ambari",
+      "type": "Optional[Boolean]"
+    },
+    "disable_create_ambari_principal": {
+      "description": "Don't create principal and keytab by Ambari",
+      "type": "Optional[Boolean]"
+    },
+    "master_kdc_host": {
+      "description": "The master KDC host in master/slave KDC deployment",
+      "type": "Optional[String[1]]"
+    },
+    "preconfigure_services": {
+      "description": "Preconfigure service. Possible value are NONE, DEFAULT or ALL. (default: 'DEFAULT')",
+      "type": "Optional[String[1]]"
+    },
+    "ad_create_attributes_template": {
+      "description": "A velocity template to use when create service principals in Active Directory.",
+      "type": "Optional[String[1]]"
+    },
+    "disable_manage_krb5_conf": {
+      "description": "Don't manage krb5.conf by Ambari",
+      "type": "Optional[Boolean]"
+    },
+    "krb5_conf_directory": {
+      "description": "The krb5.conf coonfiguration directory",
+      "type": "Optional[String[1]]"
+    },
+    "krb5_conf_template": {
+      "description": "The krb5.conf template",
+      "type": "Optional[String[1]]"
+    }
+  }
+}

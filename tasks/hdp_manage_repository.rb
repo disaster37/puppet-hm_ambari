@@ -9,7 +9,7 @@ def hpd_manage_repository(ambari_url, ambari_login, ambari_password, use_spacewa
   cmd_string << " --ambari-login #{ambari_login}" unless ambari_login.nil?
   cmd_string << " --ambari-password #{ambari_password}" unless ambari_password.nil?
   cmd_string << ' create-or-update-repository'
-  cmd_string << ' --use-spacewalk' unless use_spacewalk.nil?
+  cmd_string << ' --use-spacewalk' if use_spacewalk
   cmd_string << " --repository-file #{repository_file}" unless repository_file.nil?
 
   stdout, stderr, status = Open3.capture3(cmd_string)

@@ -9,13 +9,15 @@ services:
     ports:
       - "5432:5432"
   puppet:
-    image: harbor.hm.dm.ad/puppet/puppet:develop
+    image: webcenter/puppet-dev:latest
     volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - ./:$PWD
-      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ./tests/krb5.conf:/etc/krb5.conf:ro
       - ./tests:/hieradata
       - ./:/etc/puppetlabs/code/modules/hm_ambari:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./tests:/var/run/seb
     environment:
       - http_proxy=${http_proxy}
       - https_proxy=${https_proxy}
@@ -24,10 +26,21 @@ services:
       - FACTER_https_proxy=${https_proxy}
     links:
       - postgres:db
+      - kerberos:kdc.test.local
     ports:
-      - "60101:8443"
-      - "60100:8080"
+      - "8443:8443"
+      - "8080:8080"
     privileged: true
     hostname: puppet
     domainname: test.local
     working_dir: $PWD
+  kerberos:
+    image: sequenceiq/kerberos
+    tty: true
+    hostname: kdc
+    domainname: test.local
+    environment:
+      REALM: TEST.LOCAL
+      DOMAIN_REALM: test.local
+      KERB_ADMIN_PASS: adminadmin
+      SEARCH_DOMAINS: .test.local,test.local

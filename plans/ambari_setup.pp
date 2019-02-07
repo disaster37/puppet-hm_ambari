@@ -1,4 +1,4 @@
-plan hm_ambari::ambari_deploy (
+plan hm_ambari::ambari_setup (
     TargetSpec $nodes,
     String $java_home = '/usr/lib/jvm/java',
     String $db_type,
@@ -246,7 +246,7 @@ plan hm_ambari::ambari_deploy (
     }
     
     
-    notice('Don\'t forget to put `hm_ambari::server::$agent_service_ensure = \'running\'`')
+    notice('Don\'t forget to put `hm_ambari::server::$service_ensure = \'running\'`')
     
     # Manage HDP repository
     

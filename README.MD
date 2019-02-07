@@ -332,7 +332,7 @@ PARAMETERS:
 Help:
 ```bash
 bolt task run --nodes localhost service name=ambari-server action=start
-bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_setup_ldap ldap_url=dc.domain.com:389 ldap_ssl=false ldap_user_class=person ldap_user_attr=sAMAccountName ldap_group_class=group ldap_group_attr=cn ldap_member_attr=member ldap_dn=distunguishedName ldap_base_dn=HM.DM.AD ldap_referral=follow ldap_bind_anonym=false ldap_manager_dn=test ldap_manager_password=test ldap_save_settings=true ldap_collision=convert ldap_lowercase=true ldap_type=AD admin_user=admin admin_password=admin
+bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_setup_ldap ldap_url=dc.domain.com:389 ldap_ssl=false ldap_user_class=person ldap_user_attr=sAMAccountName ldap_group_class=group ldap_group_attr=cn ldap_member_attr=member ldap_dn=distunguishedName ldap_base_dn=DOMAIN.COM ldap_referral=follow ldap_bind_anonym=false ldap_manager_dn=test ldap_manager_password=test ldap_save_settings=true ldap_collision=convert ldap_lowercase=true ldap_type=AD admin_user=admin admin_password=admin
 ```
 
 ### Ambari sync LDAP
@@ -483,6 +483,94 @@ Sample:
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::hdp_add_node ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test blueprint_name=test hostname=puppet2.test.local  role=master
 ```
 
+### HDP enable Kerberos
+
+Help:
+```bash
+bolt --modulepath /etc/puppetlabs/code/modules task show hm_ambari::hdp_enable_kerberos
+
+hm_ambari::hdp_enable_kerberos - Permit to enable Kerberos on HDP from Ambari API
+
+USAGE:
+bolt task run --nodes <node-name> hm_ambari::hdp_enable_kerberos ambari_url=<value> ambari_login=<value> ambari_password=<value> cluster_name=<value> kdc_type=<value> disable_manage_identities=<value> kdc_hosts=<value> realm=<value> ldap_url=<value> container_dn=<value> domains=<value> admin_server_host=<value> principal_name=<value> principal_password=<value> persist_credential=<value> disable_install_packages=<value> executable_search_paths=<value> encryption_type=<value> password_length=<value> password_min_lowercase_letters=<value> password_min_uppercase_letters=<value> password_min_digits=<value> password_min_punctuation=<value> password_min_whitespace=<value> check_principal_name=<value> enable_case_insensitive_username_rules=<value> disable_manage_auth_to_local=<value> disable_create_ambari_principal=<value> master_kdc_host=<value> preconfigure_services=<value> ad_create_attributes_template=<value> disable_manage_krb5_conf=<value> krb5_conf_directory=<value> krb5_conf_template=<value>
+
+PARAMETERS:
+- ambari_url: Optional[String[1]]
+    The Ambari URL. Default to `http://localhost:8080/api/v1`
+- ambari_login: Optional[String[1]]
+    The Ambari login to connect on Ambari API. Default to `admin`
+- ambari_password: String[1]
+    The Ambari password to connect on Ambari API. Default to `admin`
+- cluster_name: String[1]
+    The HDP cluster name where you should to enable kerberos
+- kdc_type: Optional[String[1]]
+    The kdc type to use (active-directory, mit-kdc or ipa) (default: 'active-directory')
+- disable_manage_identities: Optional[Boolean]
+    Manage Kerberos principals and keytabs manually
+- kdc_hosts: String[1]
+    A comma separated list of KDC host. Optionnaly a port number may be included
+- realm: String[1]
+    The default realm to use when creating service principal
+- ldap_url: Optional[String[1]]
+    The URL to Active Directory LDAP server. Only needed if the KDC type is Active Directory
+- container_dn: Optional[String[1]]
+    The DN of the container used store service principals. Only needed if you use Active Directory
+- domains: Optional[String[1]]
+    A comma separated list of domain names used to map server host names to the REALM name. It's optionnal
+- admin_server_host: String[1]
+    The host for KDC Kerberos administrative host. Optionnaly the port number can be included
+- principal_name: String[1]
+    Admin principal used to create principals and export keytabs
+- principal_password: String[1]
+    Admin principal password
+- persist_credential: Optional[Boolean]
+    Store admin credential. Need to enable password encryption before that
+- disable_install_packages: Optional[Boolean]
+    Disable the installation of Kerberos client package
+- executable_search_paths: Optional[String[1]]
+    A comma delimited list of search paths used to find Kerberos utilities (default: '/usr/bin, /usr/kerberos/bin, /usr/sbin, /usr/lib/mit/bin, /usr/lib/mit/sbin')
+- encryption_type: Optional[String[1]]
+    The supported list of session key encryption types that should be returned by the KDC (default: 'aes des3-cbc-sha1 rc4 des-cbc-md5')
+- password_length: Optional[Integer]
+    The password length (default: 20)
+- password_min_lowercase_letters: Optional[Integer]
+    The minimal lowercase letters to compose password (default: 1)
+- password_min_uppercase_letters: Optional[Integer]
+    The minimal uppercase letters to compose password (default: 1)
+- password_min_digits: Optional[Integer]
+    The minimal digits to compose password (default: 1)
+- password_min_punctuation: Optional[Integer]
+    The minimal punctuation to compose password (default: 1)
+- password_min_whitespace: Optional[Integer]
+    The minimal whitespace to compose password (default: 0)
+- check_principal_name: Optional[String[1]]
+    The principal name to use when executing Kerberos service check (default: '${cluster_name|toLower()}-${short_date}')
+- enable_case_insensitive_username_rules: Optional[Boolean]
+    Force principal names to resolv to lowercase local usernames in auth-to-local rules
+- disable_manage_auth_to_local: Optional[Boolean]
+    Don't manage the Hadoop auth-to-local rules by Ambari
+- disable_create_ambari_principal: Optional[Boolean]
+    Don't create principal and keytab by Ambari
+- master_kdc_host: Optional[String[1]]
+    The master KDC host in master/slave KDC deployment
+- preconfigure_services: Optional[String[1]]
+    Preconfigure service. Possible value are NONE, DEFAULT or ALL. (default: 'DEFAULT')
+- ad_create_attributes_template: Optional[String[1]]
+    A velocity template to use when create service principals in Active Directory.
+- disable_manage_krb5_conf: Optional[Boolean]
+    Don't manage krb5.conf by Ambari
+- krb5_conf_directory: Optional[String[1]]
+    The krb5.conf coonfiguration directory
+- krb5_conf_template: Optional[String[1]]
+    The krb5.conf template
+```
+
+
+Sample:
+```bash
+bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::hdp_enable_kerberos ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test kdc_type=mit-kdc kdc_hosts=kdc.domain.com realm=DOMAIN.COM admin_server_host=kdc.domain.com principal_name=admin/admin@DOMAIN.COM principal_password=adminadmin domains=domain.com,.domain.com
+```
+
 
 ## How to use deployement plan
 
@@ -542,7 +630,7 @@ bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::ambari_setup 
   cert_crt_path=/tmp/ambari.crt\
   truststore_path=/etc/ambari-server/truststore.jks\
   ldap_url=dc.domain.com:686\
-  ldap_base_dn=HM.DM.AD\
+  ldap_base_dn=DOMAIN.COM\
   ldap_manager_dn=ldap_user\
   ldap_manager_password=ldap_password\
   admin_password=admin
@@ -655,15 +743,18 @@ To cleanup your environment, lauch the following command:
 ```bash
 docker-compose down -v
 docker-compose up -d
-docker compose run puppet bash
+docker-compose exec puppet bash
 r10k puppetfile install --puppetfile Puppetfile --moduledir /etc/puppetlabs/code/modules/
 puppet apply tests/site-server-default.pp
+puppet apply tests/site-agent-default.pp
 ```
+
+> if you need proxy do download yum package you need to set the proxy on /etc/yum.conf because of ambari not use environment variable http_proxy or https_proxy when it install yum package.
+> `echo "proxy=${http_proxy}" >> /etc/yum.conf`
 
 ##### hm_ambari::ambari_setup
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_setup java_home=/usr/lib/jvm/java db_type=postgres db_host=db db_name=ambari db_user=ambari db_password=ambari
 ```
@@ -671,7 +762,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::ambari_init_database
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt task run --nodes localhost package name=postgresql action=install
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_init_database db_type=postgres db_host=db db_name=ambari db_user=ambari db_password=ambari
@@ -680,7 +770,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::ambari_encrypt_password
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_encrypt_password master_key=ambari
 ```
@@ -688,7 +777,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::ambari_setup_jdbc
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt task run --nodes localhost package name=postgresql-jdbc action=install
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_setup_jdbc jdbc_driver_path=/usr/share/java/postgresql-jdbc.jar jdbc_db=postgres
@@ -697,7 +785,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::ambari_add_mpack
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_add_mpack mpack_url=http://public-repo-1.hortonworks.com/HDP-SOLR/hdp-solr-ambari-mp/solr-service-mpack-3.0.0.tar.gz
 ```
@@ -705,7 +792,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::ambari_setup_https
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt command run --nodes localhost "openssl genrsa -out /tmp/ambari.key 2048"
 bolt command run --nodes localhost "openssl req -new -x509 -days 365000 -key /tmp/ambari.key -out /tmp/ambari.crt -subj \"/C=US/ST=Denial/L=Springfield/O=Dis/CN=puppet.test.local\""
@@ -715,7 +801,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost  hm_am
 ##### hm_ambari::ambari_setup_truststore
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt command run --nodes localhost "keytool -import -noprompt -file \"/tmp/ambari.crt\" -alias \"ambari\" -keystore \"/etc/ambari-server/truststore.jks\" -storepass \"ambari\""
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost  hm_ambari::ambari_setup_truststore  truststore_type=jks truststore_path=/etc/ambari-server/truststore.jks truststore_password=ambari truststore_reconfigure=true
@@ -724,16 +809,14 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost  hm_am
 ##### hm_ambari::ambari_setup_ldap
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt task run --nodes localhost service name=ambari-server action=start
-bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_setup_ldap ldap_url=dc.domain.com:389 ldap_ssl=false ldap_user_class=person ldap_user_attr=sAMAccountName ldap_group_class=group ldap_group_attr=cn ldap_member_attr=member ldap_dn=distunguishedName ldap_base_dn=HM.DM.AD ldap_referral=follow ldap_bind_anonym=false ldap_manager_dn=test ldap_manager_password=test ldap_save_settings=true ldap_collision=convert ldap_lowercase=true ldap_type=AD admin_user=admin admin_password=admin
+bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_setup_ldap ldap_url=dc.domain.com:389 ldap_ssl=false ldap_user_class=person ldap_user_attr=sAMAccountName ldap_group_class=group ldap_group_attr=cn ldap_member_attr=member ldap_dn=distunguishedName ldap_base_dn=DOMAIN.COM ldap_referral=follow ldap_bind_anonym=false ldap_manager_dn=test ldap_manager_password=test ldap_save_settings=true ldap_collision=convert ldap_lowercase=true ldap_type=AD admin_user=admin admin_password=admin
 ```
 
 ##### hm_ambari::ambari_sync_ldap
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::ambari_sync_ldap group_path=/dev/null admin_user=admin admin_password=admin
 ```
@@ -741,7 +824,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::hdp_manage_repository
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::hdp_manage_repository ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin repository_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_repository.json
 ```
@@ -749,7 +831,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::hdp_deploy_cluster
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::hdp_deploy_cluster ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test blueprint_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_blueprint.json host_template_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_hoststemplate.json
 ```
@@ -757,7 +838,6 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::hdp_manage_permission
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::hdp_manage_permission ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin privilege_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_privilege.json
 ```
@@ -765,9 +845,18 @@ bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_amb
 ##### hm_ambari::hdp_add_node
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
 bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::hdp_add_node ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test blueprint_name=test hostname=puppet2.test.local  role=master
+```
+
+##### hm_ambari::hdp_enable_kerberos
+
+
+```bash
+docker-compose exec puppet bash
+bolt task run --nodes localhost package name=krb5-workstation action=install
+bolt task run --nodes localhost package name=krb5-libs action=install
+bolt --modulepath /etc/puppetlabs/code/modules task run --nodes localhost hm_ambari::hdp_enable_kerberos ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test kdc_type=mit-kdc kdc_hosts=kdc.test.local realm=TEST.LOCAL admin_server_host=kdc.test.local principal_name=admin/admin@TEST.LOCAL principal_password=adminadmin domains=test.local,.test.local disable_manage_krb5_conf=true
 ```
 
 #### Tests plans
@@ -777,16 +866,19 @@ To cleanup your environment, lauch the following command:
 ```bash
 docker-compose down -v
 docker-compose up -d
-docker compose run puppet bash
+docker-compose exec puppet bash
 r10k puppetfile install --puppetfile Puppetfile --moduledir /etc/puppetlabs/code/modules/
 puppet apply tests/site-server-default.pp
 ```
 
+> if you need proxy do download yum package you need to set the proxy on /etc/yum.conf because of ambari not use environment variable http_proxy or https_proxy when it install yum package.
+> `echo "proxy=${http_proxy}" >> /etc/yum.conf`
+
 ##### hm_ambari::ambari_setup
 
 ```bash
-docker-compose up -d
 docker-compose exec puppet bash
+bolt task run --nodes localhost package name=postgresql-jdbc action=install
 bolt command run --nodes localhost "openssl genrsa -out /tmp/ambari.key 2048"
 bolt command run --nodes localhost "openssl req -new -x509 -days 365000 -key /tmp/ambari.key -out /tmp/ambari.crt -subj \"/C=US/ST=Denial/L=Springfield/O=Dis/CN=puppet.test.local\""
 bolt command run --nodes localhost "keytool -import -noprompt -file \"/tmp/ambari.crt\" -alias \"ambari\" -keystore \"/etc/ambari-server/truststore.jks\" -storepass \"ambari\""
@@ -803,7 +895,7 @@ bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::ambari_setup 
   cert_crt_path=/tmp/ambari.crt\
   truststore_path=/etc/ambari-server/truststore.jks\
   ldap_url=dc.domain.com:686\
-  ldap_base_dn=HM.DM.AD\
+  ldap_base_dn=DOMAIN.COM\
   ldap_manager_dn=ldap_user\
   ldap_manager_password=ldap_password\
   admin_password=admin

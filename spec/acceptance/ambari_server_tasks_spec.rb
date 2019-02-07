@@ -34,6 +34,19 @@ describe 'ambari server tasks' do
       shell(query)
       shell('sudo -u postgres createdb -E utf8 -O oozie oozie')
     end
+    
+    it 'start kerberos' do
+      shell('kdb5_util create -s -P adminadmin')
+      shell('service krb5kdc start')
+      shell('service kadmin start')
+      shell('kadmin.local -q "addprinc -pw adminadmin admin/admin"')
+      shell('sed -i.bak "s/EXAMPLE.COM/TEST.LOCAL/g" /var/kerberos/krb5kdc/kadm5.acl')
+      shell('service kadmin restart')
+    end
+    
+    it 'set yum proxy' do
+      shell('echo "proxy=${http_proxy}" >> /etc/yum.conf')
+    end
 
     it 'runs successfully' do
       pp = <<-EOS
@@ -165,6 +178,15 @@ describe 'ambari server tasks' do
       )
       # We just test if syntax is right
       expect_multiple_regexes(result: result, regexes: [%r{Host puppet2.test.local not found}])
+    end
+    
+    it 'execute HDP enable kerberos' do
+      result = run_task(
+        task_name: 'hm_ambari::hdp_enable_kerberos',
+        params: 'ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test kdc_type=mit-kdc kdc_hosts=centos-7-x64 realm=TEST.LOCAL admin_server_host=centos-7-x64 principal_name=admin/admin@TEST.LOCAL principal_password=adminadmin domains=test.local,.test.local disable_manage_krb5_conf=true',
+      )
+      # We just test if syntax is right
+      expect_multiple_regexes(result: result, regexes: [%r{Kerberos is enabled}])
     end
   end
 end

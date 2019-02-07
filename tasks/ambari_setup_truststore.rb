@@ -8,7 +8,7 @@ def ambari_setup_truststore(truststore_type, truststore_path, truststore_passwor
   cmd_string << " --truststore-type=#{truststore_type}" unless truststore_type.nil?
   cmd_string << " --truststore-path=#{truststore_path}" unless truststore_path.nil?
   cmd_string << " --truststore-password=#{truststore_password}" unless truststore_password.nil?
-  cmd_string << ' --truststore-reconfigure' unless truststore_reconfigure.nil?
+  cmd_string << ' --truststore-reconfigure' if truststore_reconfigure
 
   stdout, stderr, status = Open3.capture3(cmd_string)
   raise Puppet::Error, "stderr: '#{stderr}'\nstdout: '#{stdout.strip}'" if status != 0

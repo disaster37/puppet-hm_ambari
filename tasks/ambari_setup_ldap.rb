@@ -51,7 +51,7 @@ def ambari_setup_ldap(
   cmd_string << " --ldap-bind-anonym=#{ldap_bind_anonym}" unless ldap_bind_anonym.nil?
   cmd_string << " --ldap-manager-dn=#{ldap_manager_dn}" unless ldap_manager_dn.nil?
   cmd_string << " --ldap-manager-password=#{ldap_manager_password}" unless ldap_manager_password.nil?
-  cmd_string << ' --ldap-save-settings' unless ldap_save_settings.nil?
+  cmd_string << ' --ldap-save-settings' if ldap_save_settings
   cmd_string << " --ldap-sync-username-collisions-behavior=#{ldap_collision}" unless ldap_collision.nil?
   cmd_string << " --ldap-force-lowercase-usernames=#{ldap_lowercase}" unless ldap_lowercase.nil?
   cmd_string << " --ldap-pagination-enabled=#{ldap_pagination}" unless ldap_pagination.nil?
