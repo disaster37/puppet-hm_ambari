@@ -19,7 +19,7 @@ You need to apply the `hm_ambari::agent` and `hm_ambari::server` on your nodes.
 
 Then execute the plan `hm_ambari::ambari_setup` with Bolt.
 After that, you need to lauch the plan `hm_ambari::deploy_hdp` to deploy HDP cluster with Blueprint API.
-Next, you can call the plan `hm_ambari::hdp_kerberos` to enable Kerberos on HDP.
+You can choose to enable Kerberos when you lauch the plan.
 
 > To finish, you need to set `hm_ambari::server::$server_service_ensure = 'running'`.
 
@@ -52,7 +52,15 @@ class {'hm_ambari::agent':
 }
 ```
 
-@TODO list of parameters
+You can use the following parameters:
+- **service_ensure**: Permit to stop or run ambari-agent services. You can use `stopped` or `running` value.
+- **service_enable**: Permit to enable or disable ambari-agent services.
+- **ambari_server_port**: Permit to set the port use by ambari server to communicate with ambari agent.
+- **ambari_server_secure_port**: Permit to set the port use by ambari server to communicate with ambari agent in the secure way.
+- **ambari_server**: It's the host or IP of ambari server.
+- **ambari_agent_alias**: If you should to use alias name for your ambari agent instead of the FQDN. It's optionnal.
+- **package_ensure**: To install or remove ambari-agent RPM.
+- **ambari_agent_settings**: To set custom settings on ambari agent.
 
 #### Ambari server
 
@@ -64,7 +72,19 @@ class {'hm_ambari::server':
 }
 ```
 
-@TODO list of parameters
+You can use the following parameters:
+- **service_ensure**: Permit to stop or run ambari-server services. You can use `stopped` or `running` value.
+- **service_enable**: Permit to enable or disable ambari-server services.
+- **package_ensure**: To install or remove ambari-server RPM.
+- **ambari_server_settings**: To set custom settings on ambari server.
+- **server_agent_ssl**: To enable two way SSL between agent and server.
+- **disable_python_security**: The disable certificat SSL check on python. It's needed by some Ambari script.
+- **ambari_cli_version**: Permit to choose the right version of Ambari cli: https://github.com/disaster37/go-ambari-rest/releases
+- **install_ambari_cli**: Permit to install automatically the ambari cli.
+- **hdp_privileges**: To create privilige file from hieradata YAML
+- **hdp_repositories**: To create repository file from hieradata YAML
+- **hdp_blueprint**: To create blueprint file from hieradata YAML
+- **hdp_hosts_template**: To create host template file from hieradata YAML
 
 
 ## How to use tasks
@@ -617,7 +637,7 @@ Then you doesn't need to set paremeters about LDAP settings.
 
 To finish, you can setup Ambari
 ```bash
-bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::ambari_setup --nodes localhost \
+bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::ambari_setup --nodes <YOUR_AMBARI_SERVER_NODE> \
   db_type=postgres\
   db_host=db\
   db_name=ambari\
@@ -692,11 +712,102 @@ PARAMETERS:
 
 ### Deploy HDP
 
-@TODO create plan and doc
 
-### Enable HDP Kerberos
+This deployement plan permit to deploy HDP cluster:
+- It configure the HDP repositories
+- It deploy HDP topologie from blueprint file and host template file
+- It manage privileges on Ambari
+- It setup Kerberos on HDP
 
-@TODO create plan and doc
+Before to lauch it, you need to install the kerberos cli on Ambari server if you need to enable it.
+
+```bash
+bolt task run package name=krb5-workstation action=install --nodes <YOUR_AMBARI_SERVER_NODE>
+bolt task run package name=krb5-libs action=install --nodes <YOUR_AMBARI_SERVER_NODE>
+```
+
+Then you need to configure the `/etc/krb5.conf` file.
+
+After that you need to put the following file on your ambari server:
+- repositories.json file: You can use bolt to upload it or use $hm_ambari::server::hdp_repositories to generate it
+- blueprint.json file: You can use bolt to upload it or use $hm_ambari::server::hdp_blueprint to generate it
+- hosts-template.json file: You can use bolt to upload it or use $hm_ambari::server::hdp_hosts_template to generate it
+- (optionnal) privileges.json file: You can use bolt to upload it or use $hm_ambari::server::hdp_privileges to generate it
+
+
+To finish, you can deploy HDP
+```bash
+bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::deploy_hdp --nodes <YOUR_AMBARI_SERVER_NODE> \
+  cluster_name=mycluster\
+  repository_file=/etc/ambari-server/conf/api/repositories.json\
+  blueprint_file=/etc/ambari-server/conf/api/blueprint.json\
+  host_template_file=/etc/ambari-server/conf/api/hoststemplate.json\
+  privilege_file=/etc/ambari-server/conf/api/privileges.json\
+  enable_kerberos=true\
+  kdc_type=active-directory\
+  kdc_hosts=dc.domain.com\
+  realm=DOMAIN.COM\
+  ldap_url=ldaps://dc.domain.com:636\
+  container_dn=OU=HDP,DC=DOMAIN,DC=COM\
+  domains=domain.com,.domain.com\
+  admin_server_host=dc.domain.com\
+  principal_name=user@DOMAIN.COM\
+  principal_password=password\
+  persist_credential=true
+```
+
+
+The full list of availables paremeters:
+```bash
+bolt --modulepath /etc/puppetlabs/code/modules plan show hm_ambari::deploy_hdp
+
+hm_ambari::deploy_hdp
+
+USAGE:
+bolt plan run hm_ambari::deploy_hdp nodes=<value> [ambari_url=<value>] [ambari_login=<value>] [ambari_password=<value>] [use_spacewalk=<value>] cluster_name=<value> repository_file=<value> blueprint_file=<value> host_template_file=<value> [privilege_file=<value>] [enable_kerberos=<value>] [kdc_type=<value>] [disable_manage_identities=<value>] [kdc_hosts=<value>] [realm=<value>] [ldap_url=<value>] [container_dn=<value>] [domains=<value>] [admin_server_host=<value>] [principal_name=<value>] [principal_password=<value>] [persist_credential=<value>] [disable_install_packages=<value>] [executable_search_paths=<value>] [encryption_type=<value>] [password_length=<value>] [password_min_lowercase_letters=<value>] [password_min_uppercase_letters=<value>] [password_min_digits=<value>] [password_min_punctuation=<value>] [password_min_whitespace=<value>] [check_principal_name=<value>] [enable_case_insensitive_username_rules=<value>] [disable_manage_auth_to_local=<value>] [disable_create_ambari_principal=<value>] [master_kdc_host=<value>] [preconfigure_services=<value>] [ad_create_attributes_template=<value>] [disable_manage_krb5_conf=<value>] [krb5_conf_directory=<value>] [krb5_conf_template=<value>]
+
+PARAMETERS:
+- nodes: TargetSpec
+- ambari_url: String
+- ambari_login: String
+- ambari_password: String
+- use_spacewalk: Boolean
+- cluster_name: String
+- repository_file: String
+- blueprint_file: String
+- host_template_file: String
+- privilege_file: Optional[String]
+- enable_kerberos: Boolean
+- kdc_type: Optional[String]
+- disable_manage_identities: Optional[Boolean]
+- kdc_hosts: Optional[String]
+- realm: Optional[String]
+- ldap_url: Optional[String]
+- container_dn: Optional[String]
+- domains: Optional[String]
+- admin_server_host: Optional[String]
+- principal_name: Optional[String]
+- principal_password: Optional[String]
+- persist_credential: Optional[Boolean]
+- disable_install_packages: Optional[Boolean]
+- executable_search_paths: Optional[String]
+- encryption_type: Optional[String]
+- password_length: Optional[Integer]
+- password_min_lowercase_letters: Optional[Integer]
+- password_min_uppercase_letters: Optional[Integer]
+- password_min_digits: Optional[Integer]
+- password_min_punctuation: Optional[Integer]
+- password_min_whitespace: Optional[Integer]
+- check_principal_name: Optional[String]
+- enable_case_insensitive_username_rules: Optional[Boolean]
+- disable_manage_auth_to_local: Optional[Boolean]
+- disable_create_ambari_principal: Optional[Boolean]
+- master_kdc_host: Optional[String]
+- preconfigure_services: Optional[String]
+- ad_create_attributes_template: Optional[String]
+- disable_manage_krb5_conf: Optional[Boolean]
+- krb5_conf_directory: Optional[String]
+- krb5_conf_template: Optional[String]
 
 
 ## How to contribute
