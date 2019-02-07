@@ -23,7 +23,7 @@ def enable_kerberos(ambari_url, ambari_login, ambari_password, cluster_name, kdc
   cmd_string << " --encryption-type \"#{encryption_type}\"" unless encryption_type.nil?
   cmd_string << " --password-length #{password_length}" unless password_length.nil?
   cmd_string << " --password-min-lowercase-letters #{password_min_lowercase_letters}" unless password_min_lowercase_letters.nil?
-  cmd_string << " --password-min-uppercase-letters #{password-min-uppercase-letters}" unless password_min_uppercase_letters.nil?
+  cmd_string << " --password-min-uppercase-letters #{password_min_uppercaseletters}" unless password_min_uppercase_letters.nil?
   cmd_string << " --password-min-digits #{password_min_digits}" unless password_min_digits.nil?
   cmd_string << " --password-min-punctuation #{password_min_punctuation}" unless password_min_punctuation.nil?
   cmd_string << " --password-min-whitespace #{password_min_whitespace}" unless password_min_whitespace.nil?
@@ -33,15 +33,15 @@ def enable_kerberos(ambari_url, ambari_login, ambari_password, cluster_name, kdc
   cmd_string << " --ad_create_attributes_template \"#{ad_create_attributes_template}\"" unless ad_create_attributes_template.nil?
   cmd_string << " --krb5-conf-directory \"#{krb5_conf_directory}\"" unless krb5_conf_directory.nil?
   cmd_string << " --krb5-conf-template \"#{krb5_conf_template}\"" unless krb5_conf_template.nil?
-  cmd_string << " --disable-manage-identities" if disable_manage_identities
-  cmd_string << " --persist-credential" if persist_credential
-  cmd_string << " --disable-install-packages" if disable_install_packages
-  cmd_string << " --enable-case-insensitive-username-rules" if enable_case_insensitive_username_rules
-  cmd_string << " --disable-manage-auth-to-local" if disable_manage_auth_to_local
-  cmd_string << " --disable-create-ambari-principal" if disable_create_ambari_principal
-  cmd_string << " --disable-manage-krb5-conf" if disable_manage_krb5_conf
+  cmd_string << ' --disable-manage-identities' if disable_manage_identities
+  cmd_string << ' --persist-credential' if persist_credential
+  cmd_string << ' --disable-install-packages' if disable_install_packages
+  cmd_string << ' --enable-case-insensitive-username-rules' if enable_case_insensitive_username_rules
+  cmd_string << ' --disable-manage-auth-to-local' if disable_manage_auth_to_local
+  cmd_string << ' --disable-create-ambari-principal' if disable_create_ambari_principal
+  cmd_string << ' --disable-manage-krb5-conf' if disable_manage_krb5_conf
 
-  #puts cmd_string
+  # puts cmd_string
 
   stdout, stderr, status = Open3.capture3(cmd_string)
   raise Puppet::Error, "stderr: '#{stderr}'\nstdout: '#{stdout.strip}'" if status != 0
