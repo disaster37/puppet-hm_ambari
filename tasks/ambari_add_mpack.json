@@ -12,15 +12,15 @@
     },
     "proxy_url": {
       "description": "The proxy chain if you need download the mpack. For exemple https://proxy.domain.com:8080",
-      "type": "Optional[String[1]]"
+      "type": "Optional[String]"
     },
     "proxy_user": {
       "description": "The proxy user if you need download the mpack",
-      "type": "Optional[String[1]]"
+      "type": "Optional[String]"
     },
     "proxy_password": {
       "description": "The proxy password if you need download the mpack",
-      "type": "Optional[String[1]]"
+      "type": "Optional[String]"
     }
   }
 }

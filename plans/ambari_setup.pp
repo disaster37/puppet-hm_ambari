@@ -47,15 +47,16 @@ plan hm_ambari::ambari_setup (
     $r0 = run_task(
         'service',
         $nodes,
-        name    => 'ambari-server',
-        action  => 'stop'
+        _catch_errors   => true,
+        name            => 'ambari-server',
+        action          => 'stop'
     )
     $r0.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
 
@@ -63,20 +64,21 @@ plan hm_ambari::ambari_setup (
     $r1 = run_task(
         'hm_ambari::ambari_setup',
         $nodes,
-        java_home   => $java_home,
-        db_type     => $db_type,
-        db_host     => $db_host,
-        db_name     => $db_name,
-        db_user     => $db_user,
-        db_password => $db_password,
-        db_port     => $db_port
+        _catch_errors   => true,
+        java_home       => $java_home,
+        db_type         => $db_type,
+        db_host         => $db_host,
+        db_name         => $db_name,
+        db_user         => $db_user,
+        db_password     => $db_password,
+        db_port         => $db_port
     )
     $r1.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
     
@@ -84,19 +86,20 @@ plan hm_ambari::ambari_setup (
     $r2 = run_task(
         'hm_ambari::ambari_init_database',
         $nodes,
-        db_type     => $db_type,
-        db_host     => $db_host,
-        db_name     => $db_name,
-        db_user     => $db_user,
-        db_password => $db_password,
-        db_port     => $db_port
+        _catch_errors   => true,
+        db_type         => $db_type,
+        db_host         => $db_host,
+        db_name         => $db_name,
+        db_user         => $db_user,
+        db_password     => $db_password,
+        db_port         => $db_port
     )
     $r2.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
     
@@ -104,14 +107,15 @@ plan hm_ambari::ambari_setup (
     $r3 = run_task(
         'hm_ambari::ambari_encrypt_password',
         $nodes,
-        master_key => $master_key
+        _catch_errors   => true,
+        master_key      => $master_key
     )
     $r3.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
     
@@ -119,15 +123,16 @@ plan hm_ambari::ambari_setup (
     $r4 = run_task(
         'hm_ambari::ambari_setup_jdbc',
         $nodes,
+        _catch_errors       => true,
         jdbc_driver_path    => $jdbc_driver_path,
         jdbc_db             => $db_type
     )
     $r4.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
     
@@ -138,6 +143,7 @@ plan hm_ambari::ambari_setup (
         $r_setup_https = run_task(
             'hm_ambari::ambari_setup_https',
             $nodes,
+            _catch_errors   => true,
             api_ssl_port    => $api_ssl_port,
             cert_path       => $cert_crt_path,
             key_path        => $cert_key_path,
@@ -146,9 +152,9 @@ plan hm_ambari::ambari_setup (
         $r_setup_https.each |$result| {
             $node = $result.target.name
             if $result.ok {
-                notice("${node} returned a value: ${result.value}")
+                notice("${node} successed with a value: ${result.message}")
             } else {
-                notice("${node} errored with a message: ${result.error.message}")
+                err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
     }
@@ -158,6 +164,7 @@ plan hm_ambari::ambari_setup (
         $r_setup_truststore = run_task(
             'hm_ambari::ambari_setup_truststore',
             $nodes,
+            _catch_errors           => true,
             truststore_type         => 'jks',
             truststore_path         => '/etc/ambari-server/truststore.jks',
             truststore_password     => $truststore_password,
@@ -166,9 +173,9 @@ plan hm_ambari::ambari_setup (
         $r_setup_truststore.each |$result| {
             $node = $result.target.name
             if $result.ok {
-                notice("${node} returned a value: ${result.value}")
+               notice("${node} successed with a value: ${result.message}")
             } else {
-                notice("${node} errored with a message: ${result.error.message}")
+                err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
     }
@@ -178,6 +185,7 @@ plan hm_ambari::ambari_setup (
         $r_setup_mpack = run_task(
             'hm_ambari::ambari_add_mpack',
             $nodes,
+            _catch_errors   => true,
             mpack_url       => $mpack_url,
             proxy_url       => $proxy_url,
             proxy_user      => $proxy_user,
@@ -186,9 +194,9 @@ plan hm_ambari::ambari_setup (
         $r_setup_mpack.each |$result| {
             $node = $result.target.name
             if $result.ok {
-                notice("${node} returned a value: ${result.value}")
+                notice("${node} successed with a value: ${result.message}")
             } else {
-                notice("${node} errored with a message: ${result.error.message}")
+                err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
     }
@@ -197,15 +205,16 @@ plan hm_ambari::ambari_setup (
     $r_start_service = run_task(
         'service',
         $nodes,
-        name => 'ambari-server',
-        action => 'start'
+        _catch_errors   => true,
+        name            => 'ambari-server',
+        action          => 'start'
     )
     $r_start_service.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
     
@@ -214,6 +223,7 @@ plan hm_ambari::ambari_setup (
         $r_setup_ldap = run_task(
             'hm_ambari::ambari_setup_ldap',
             $nodes,
+            _catch_errors           => true,
             ldap_url                => $ldap_url,
             ldap_secondary_url      => $ldap_secondary_url,
             ldap_ssl                => $ldap_ssl,
@@ -239,9 +249,9 @@ plan hm_ambari::ambari_setup (
         $r_setup_ldap.each |$result| {
             $node = $result.target.name
             if $result.ok {
-                notice("${node} returned a value: ${result.value}")
+                notice("${node} successed with a value: ${result.message}")
             } else {
-                notice("${node} errored with a message: ${result.error.message}")
+                err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
     }

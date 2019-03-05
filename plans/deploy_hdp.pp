@@ -46,6 +46,7 @@ plan hm_ambari::deploy_hdp (
     $r_manage_repository = run_task(
         'hm_ambari::hdp_manage_repository',
         $nodes,
+        _catch_errors   => true,
         ambari_url      => $ambari_url,
         ambari_login    => $ambari_login,
         ambari_password => $ambari_password,
@@ -55,9 +56,9 @@ plan hm_ambari::deploy_hdp (
     $r_manage_repository.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
     
@@ -65,6 +66,7 @@ plan hm_ambari::deploy_hdp (
     $r_deploy_cluster = run_task(
         'hm_ambari::hdp_deploy_cluster',
         $nodes,
+        _catch_errors       => true,
         ambari_url          => $ambari_url,
         ambari_login        => $ambari_login,
         ambari_password     => $ambari_password,
@@ -75,9 +77,9 @@ plan hm_ambari::deploy_hdp (
     $r_deploy_cluster.each |$result| {
         $node = $result.target.name
         if $result.ok {
-            notice("${node} returned a value: ${result.value}")
+            notice("${node} successed with a value: ${result.message}")
         } else {
-            notice("${node} errored with a message: ${result.error.message}")
+            err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
     
@@ -86,6 +88,7 @@ plan hm_ambari::deploy_hdp (
         $r_manage_privileges = run_task(
             'hm_ambari::hdp_manage_permission',
             $nodes,
+            _catch_errors       => true,
             ambari_url          => $ambari_url,
             ambari_login        => $ambari_login,
             ambari_password     => $ambari_password,
@@ -94,9 +97,9 @@ plan hm_ambari::deploy_hdp (
         $r_manage_privileges.each |$result| {
             $node = $result.target.name
             if $result.ok {
-                notice("${node} returned a value: ${result.value}")
+                notice("${node} successed with a value: ${result.message}")
             } else {
-                notice("${node} errored with a message: ${result.error.message}")
+                err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
     }
@@ -106,6 +109,7 @@ plan hm_ambari::deploy_hdp (
         $r_enable_kerberos = run_task(
             'hm_ambari::hdp_enable_kerberos',
             $nodes,
+            _catch_errors                           => true,
             ambari_url                              => $ambari_url,
             ambari_login                            => $ambari_login,
             ambari_password                         => $ambari_password,
@@ -144,9 +148,9 @@ plan hm_ambari::deploy_hdp (
         $r_enable_kerberos.each |$result| {
             $node = $result.target.name
             if $result.ok {
-                notice("${node} returned a value: ${result.value}")
+                notice("${node} successed with a value: ${result.message}")
             } else {
-                notice("${node} errored with a message: ${result.error.message}")
+                err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
     }
