@@ -15,6 +15,7 @@ plan hm_ambari::ambari_setup (
     Optional[Integer] $api_ssl_port = 8443,
     Optional[String] $cert_alias = 'ambari',
     Optional[String] $truststore_path = undef,
+    Optional[String] $truststore_password = 'ambari',
     Array[String] $mpacks_url = [],
     Optional[String] $proxy_url = undef,
     Optional[String] $proxy_user = undef,
@@ -159,7 +160,7 @@ plan hm_ambari::ambari_setup (
             $nodes,
             truststore_type         => 'jks',
             truststore_path         => '/etc/ambari-server/truststore.jks',
-            truststore_password     => 'ambari',
+            truststore_password     => $truststore_password,
             truststore_reconfigure  => true,
         )
         $r_setup_truststore.each |$result| {

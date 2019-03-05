@@ -649,7 +649,7 @@ bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::ambari_setup 
   cert_key_path=/tmp/ambari.key\
   cert_crt_path=/tmp/ambari.crt\
   truststore_path=/etc/ambari-server/truststore.jks\
-  ldap_url=dc.domain.com:686\
+  ldap_url=dc.domain.com:636\
   ldap_base_dn=DOMAIN.COM\
   ldap_manager_dn=ldap_user\
   ldap_manager_password=ldap_password\
@@ -833,7 +833,7 @@ rake beaker
 ```bash
 docker-compose down -v
 docker-compose up -d
-docker exec puppet bash
+docker-compose exec puppet bash
 r10k puppetfile install --puppetfile Puppetfile --moduledir /etc/puppetlabs/code/modules/
 puppet apply tests/site-agent-default.pp
 ```
@@ -1006,7 +1006,7 @@ bolt --modulepath /etc/puppetlabs/code/modules plan run hm_ambari::ambari_setup 
   cert_key_path=/tmp/ambari.key\
   cert_crt_path=/tmp/ambari.crt\
   truststore_path=/etc/ambari-server/truststore.jks\
-  ldap_url=dc.domain.com:686\
+  ldap_url=dc.domain.com:636\
   ldap_base_dn=DOMAIN.COM\
   ldap_manager_dn=ldap_user\
   ldap_manager_password=ldap_password\

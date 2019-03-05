@@ -18,13 +18,16 @@ class hm_ambari::server::setup {
     if $install_ambari_cli == true {
         # Add ambari_cli
         if $file_ensure != 'absent' {
-            include wget
-            wget::fetch { 'ambari_cli':
+            include 'archive'
+            archive { '/usr/bin/ambari-cli_linux_amd64':
+              ensure      => 'present',
               source      => "https://github.com/disaster37/go-ambari-rest/releases/download/${ambari_cli_version}/ambari-cli_linux_amd64",
-              destination => '/usr/bin/ambari-cli_linux_amd64',
-              execuser    => 'root',
-              mode        => '0555',
-              cache_dir   => '/var/cache/wget'
+              user        => 'root',
+            }
+            file { '/usr/bin/ambari-cli_linux_amd64':
+                ensure => 'present',
+                mode   => '0755',
+                require => Archive['/usr/bin/ambari-cli_linux_amd64']
             }
         }
         else {
