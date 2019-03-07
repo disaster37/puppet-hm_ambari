@@ -820,10 +820,11 @@ The PR are always welcome. Please use the developpment branch to do PR.
 If you change the manifests, tasks or plans, don't forget to update the acceptance tests and run it before doing PR
 
 ```bash
-docker-compose run puppet bash
+docker-compose run --rm puppet bash
 pdk validate --puppet-version 5.3.7
 rake beaker
 ```
+
 
 ### How to lauch manual test
 

@@ -24,7 +24,7 @@ class hm_ambari::server(
         $real_service_ensure = $service_ensure
     }
 
-    require hm_ambari
+    include hm_ambari
 
     if $disable_python_security == true {
         require hm_ambari::server::python
@@ -42,6 +42,7 @@ class hm_ambari::server(
         -> Class['hm_ambari::server::config']
         -> Class['hm_ambari::server::setup']
         -> Class['hm_ambari::server::install']
+        -> Class['hm_ambari']
         -> anchor { 'hm_ambari::server::end': }
     } else {
         class { 'hm_ambari::server::install':
@@ -53,10 +54,11 @@ class hm_ambari::server(
         }
 
         anchor { 'hm_ambari::server::begin': }
+        -> Class['hm_ambari']
         -> Class['hm_ambari::server::install']
         -> Class['hm_ambari::server::config']
         -> Class['hm_ambari::server::setup']
-        -> Class['::hm_ambari::server::service']
+        -> Class['hm_ambari::server::service']
         -> anchor { 'hm_ambari::server::end': }
     }
 }

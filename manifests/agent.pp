@@ -10,7 +10,7 @@ class hm_ambari::agent(
 ) inherits hm_ambari::params {
 
 
-    require hm_ambari
+    include hm_ambari
 
     if $package_ensure == 'absent' {
         $real_service_ensure = 'stopped'
@@ -37,12 +37,14 @@ class hm_ambari::agent(
         -> Class['hm_ambari::agent::service']
         -> Class['hm_ambari::agent::config']
         -> Class['hm_ambari::agent::install']
+        -> Class['hm_ambari']
         -> anchor { 'hm_ambari::agent::end': }
     } else {
         anchor { 'hm_ambari::agent::begin': }
+        -> Class['hm_ambari']
         -> Class['hm_ambari::agent::install']
         -> Class['hm_ambari::agent::config']
-        -> Class['::hm_ambari::agent::service']
+        -> Class['hm_ambari::agent::service']
         -> anchor { 'hm_ambari::agent::end': }
     }
 }
