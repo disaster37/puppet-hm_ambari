@@ -257,6 +257,22 @@ plan hm_ambari::ambari_setup (
                 err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
+        
+        $r_restart_service = run_task(
+            'service',
+            $nodes,
+            _catch_errors   => true,
+            name            => 'ambari-server',
+            action          => 'restart'
+        )
+        $r_restart_service.each |$result| {
+            $node = $result.target.name
+            if $result.ok {
+                notice("${node} successed with a value: ${result.message}")
+            } else {
+                err("${node} errored with a message: ${result.error.message}\n${result.message}")
+            }
+        }
     }
     
     
