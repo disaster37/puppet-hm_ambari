@@ -99,11 +99,9 @@ ldap_lowercase = params['ldap_lowercase']
 ldap_pagination = params.fetch('ldap_pagination', true)
 ambari_login = params.fetch('admin_user', 'admin')
 ambari_password = params['admin_password']
-if ldap_ssl == true
-  truststore_type = params.fetch('truststore_type', 'jks')
-  truststore_path = params['truststore_path']
-  truststore_password = params['truststore_password']
-end
+truststore_type = params.fetch('truststore_type', 'jks')
+truststore_path = params['truststore_path']
+truststore_password = params['truststore_password']
 
 begin
   result = ambari_setup_ldap(
