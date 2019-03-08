@@ -244,6 +244,9 @@ plan hm_ambari::ambari_setup (
             ldap_lowercase          => $ldap_lowercase,
             admin_user              => $admin_user,
             admin_password          => $admin_password,
+            truststore_type         => 'jks',
+            truststore_path         => '/etc/ambari-server/truststore.jks',
+            truststore_password     => $truststore_password
             
         )
         $r_setup_ldap.each |$result| {
