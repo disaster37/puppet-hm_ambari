@@ -26,7 +26,7 @@ class hm_ambari::params {
   $server_agent_ssl = false
   $ambari_server_settings = {}
   $disable_python_security = true
-  $ambari_cli_version = '1.0.4-1'
+  $ambari_cli_version = '1.0.4-2'
   $install_ambari_cli = true
   $hdp_privileges = {}
   $hdp_repositories = {}
