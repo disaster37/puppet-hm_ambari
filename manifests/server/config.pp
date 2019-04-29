@@ -1,6 +1,6 @@
 class hm_ambari::server::config{
-    $file_ensure = $hm_ambari::server::file_ensure
-    $server_agent_ssl = $hm_ambari::server::server_agent_ssl
+    $file_ensure            = $hm_ambari::server::file_ensure
+    $server_agent_ssl       = $hm_ambari::server::server_agent_ssl
     $ambari_server_settings = $hm_ambari::server::ambari_server_settings
 
     # Ambari settings

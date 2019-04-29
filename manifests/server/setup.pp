@@ -1,11 +1,11 @@
 class hm_ambari::server::setup {
     $ambari_cli_version = $hm_ambari::server::ambari_cli_version
-    $directory_ensure = $hm_ambari::server::directory_ensure
-    $file_ensure = $hm_ambari::server::file_ensure
+    $directory_ensure   = $hm_ambari::server::directory_ensure
+    $file_ensure        = $hm_ambari::server::file_ensure
     $install_ambari_cli = $hm_ambari::server::install_ambari_cli
-    $hdp_privileges = $hm_ambari::server::hdp_privileges
-    $hdp_repositories = $hm_ambari::server::hdp_repositories
-    $hdp_blueprint = $hm_ambari::server::hdp_blueprint
+    $hdp_privileges     = $hm_ambari::server::hdp_privileges
+    $hdp_repositories   = $hm_ambari::server::hdp_repositories
+    $hdp_blueprint      = $hm_ambari::server::hdp_blueprint
     $hdp_hosts_template = $hm_ambari::server::hdp_hosts_template
 
 

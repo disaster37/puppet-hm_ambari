@@ -1,12 +1,12 @@
 class hm_ambari::agent(
-  Variant[Boolean, Enum['stopped', 'running']] $service_ensure = $hm_ambari::params::agent_service_ensure,
-  Boolean $service_enable = $hm_ambari::params::agent_service_enable,
-  String $ambari_server_port = $hm_ambari::params::ambari_server_port,
-  String $ambari_server_secure_port = $hm_ambari::params::ambari_server_secure_port,
-  String $ambari_server= $hm_ambari::params::ambari_server,
-  Optional[String] $ambari_agent_alias = $hm_ambari::params::ambari_agent_alias,
-  Enum['present', 'absent'] $package_ensure = $hm_ambari::params::agent_package_ensure,
-  Hash[String, Hash] $ambari_agent_settings = $hm_ambari::params::ambari_agent_settings,
+  Variant[Boolean, Enum['stopped', 'running']]  $service_ensure             = $hm_ambari::params::agent_service_ensure,
+  Boolean                                       $service_enable             = $hm_ambari::params::agent_service_enable,
+  String                                        $ambari_server_port         = $hm_ambari::params::ambari_server_port,
+  String                                        $ambari_server_secure_port  = $hm_ambari::params::ambari_server_secure_port,
+  String                                        $ambari_server              = $hm_ambari::params::ambari_server,
+  Optional[String]                              $ambari_agent_alias         = $hm_ambari::params::ambari_agent_alias,
+  Enum['present', 'absent']                     $package_ensure             = $hm_ambari::params::agent_package_ensure,
+  Hash[String, Hash]                            $ambari_agent_settings      = $hm_ambari::params::ambari_agent_settings,
 ) inherits hm_ambari::params {
 
 

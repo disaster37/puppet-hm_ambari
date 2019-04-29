@@ -1,11 +1,11 @@
 class hm_ambari::agent::config {
 
-    $ambari_agent_settings = $hm_ambari::agent::ambari_agent_settings
-    $ambari_server = $hm_ambari::agent::ambari_server
-    $ambari_server_port = $hm_ambari::agent::ambari_server_port
-    $ambari_server_secure_port = $hm_ambari::agent::ambari_server_secure_port
-    $ambari_agent_alias = $hm_ambari::agent::ambari_agent_alias
-    $file_ensure = $hm_ambari::agent::file_ensure
+    $ambari_agent_settings      = $hm_ambari::agent::ambari_agent_settings
+    $ambari_server              = $hm_ambari::agent::ambari_server
+    $ambari_server_port         = $hm_ambari::agent::ambari_server_port
+    $ambari_server_secure_port  = $hm_ambari::agent::ambari_server_secure_port
+    $ambari_agent_alias         = $hm_ambari::agent::ambari_agent_alias
+    $file_ensure                = $hm_ambari::agent::file_ensure
 
 
     # Ambari settings
