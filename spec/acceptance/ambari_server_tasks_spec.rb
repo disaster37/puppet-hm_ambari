@@ -34,7 +34,7 @@ describe 'ambari server tasks' do
       shell(query)
       shell('sudo -u postgres createdb -E utf8 -O oozie oozie')
     end
-    
+
     it 'start kerberos' do
       shell('kdb5_util create -s -P adminadmin')
       shell('service krb5kdc start')
@@ -43,7 +43,7 @@ describe 'ambari server tasks' do
       shell('sed -i.bak "s/EXAMPLE.COM/TEST.LOCAL/g" /var/kerberos/krb5kdc/kadm5.acl')
       shell('service kadmin restart')
     end
-    
+
     it 'set yum proxy' do
       shell('echo "proxy=${http_proxy}" >> /etc/yum.conf')
     end
@@ -179,7 +179,7 @@ describe 'ambari server tasks' do
       # We just test if syntax is right
       expect_multiple_regexes(result: result, regexes: [%r{Host puppet2.test.local not found}])
     end
-    
+
     it 'execute HDP enable kerberos' do
       result = run_task(
         task_name: 'hm_ambari::hdp_enable_kerberos',

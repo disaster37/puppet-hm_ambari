@@ -22,8 +22,8 @@ services:
       - http_proxy=${http_proxy}
       - https_proxy=${https_proxy}
       - no_proxy=127.0.0.1,.test.local,10.221.78.61
-      - FACTER_http_proxy=${http_proxy}
-      - FACTER_https_proxy=${https_proxy}
+      #- FACTER_http_proxy=${http_proxy}
+      #- FACTER_https_proxy=${https_proxy}
     links:
       - postgres:db
       - kerberos:kdc.test.local

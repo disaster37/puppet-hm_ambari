@@ -1,16 +1,16 @@
 class hm_ambari::agent(
-  Variant[Boolean, Enum['stopped', 'running']] $service_ensure = $hm_ambari::params::agent_service_ensure,
-  Boolean $service_enable = $hm_ambari::params::agent_service_enable,
-  String $ambari_server_port = $hm_ambari::params::ambari_server_port,
-  String $ambari_server_secure_port = $hm_ambari::params::ambari_server_secure_port,
-  String $ambari_server= $hm_ambari::params::ambari_server,
-  Optional[String] $ambari_agent_alias = $hm_ambari::params::ambari_agent_alias,
-  Enum['present', 'absent'] $package_ensure = $hm_ambari::params::agent_package_ensure,
-  Hash[String, Hash] $ambari_agent_settings = $hm_ambari::params::ambari_agent_settings,
+  Variant[Boolean, Enum['stopped', 'running']]  $service_ensure             = $hm_ambari::params::agent_service_ensure,
+  Boolean                                       $service_enable             = $hm_ambari::params::agent_service_enable,
+  String                                        $ambari_server_port         = $hm_ambari::params::ambari_server_port,
+  String                                        $ambari_server_secure_port  = $hm_ambari::params::ambari_server_secure_port,
+  String                                        $ambari_server              = $hm_ambari::params::ambari_server,
+  Optional[String]                              $ambari_agent_alias         = $hm_ambari::params::ambari_agent_alias,
+  Enum['present', 'absent']                     $package_ensure             = $hm_ambari::params::agent_package_ensure,
+  Hash[String, Hash]                            $ambari_agent_settings      = $hm_ambari::params::ambari_agent_settings,
 ) inherits hm_ambari::params {
 
 
-    require hm_ambari
+    include hm_ambari
 
     if $package_ensure == 'absent' {
         $real_service_ensure = 'stopped'
@@ -37,12 +37,14 @@ class hm_ambari::agent(
         -> Class['hm_ambari::agent::service']
         -> Class['hm_ambari::agent::config']
         -> Class['hm_ambari::agent::install']
+        -> Class['hm_ambari']
         -> anchor { 'hm_ambari::agent::end': }
     } else {
         anchor { 'hm_ambari::agent::begin': }
+        -> Class['hm_ambari']
         -> Class['hm_ambari::agent::install']
         -> Class['hm_ambari::agent::config']
-        -> Class['::hm_ambari::agent::service']
+        -> Class['hm_ambari::agent::service']
         -> anchor { 'hm_ambari::agent::end': }
     }
 }

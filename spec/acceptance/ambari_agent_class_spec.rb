@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 apply_manifest_opts = {
   catch_failures: true,
   debug: true,
-  trace: true
+  trace: true,
 }
 
 describe 'ambari agent class:' do
