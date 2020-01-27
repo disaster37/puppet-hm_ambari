@@ -61,7 +61,7 @@ plan hm_ambari::deploy_hdp (
             err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
-    
+
     # Deploy HDP cluster with blueprint
     $r_deploy_cluster = run_task(
         'hm_ambari::hdp_deploy_cluster',
@@ -82,7 +82,7 @@ plan hm_ambari::deploy_hdp (
             err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
-    
+
     # Manage privileges
     if $privilege_file != undef {
         $r_manage_privileges = run_task(
@@ -103,7 +103,7 @@ plan hm_ambari::deploy_hdp (
             }
         }
     }
-    
+
     # Enable kerberos
     if $enable_kerberos == true {
         $r_enable_kerberos = run_task(
@@ -154,9 +154,9 @@ plan hm_ambari::deploy_hdp (
             }
         }
     }
-    
-    
+
+
     notice('HDP deployement is finished')
-    
+
 
 }

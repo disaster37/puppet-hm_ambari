@@ -20,13 +20,13 @@ class hm_ambari::server::setup {
         if $file_ensure != 'absent' {
             include 'archive'
             archive { '/usr/bin/ambari-cli_linux_amd64':
-              ensure      => 'present',
-              source      => "https://github.com/disaster37/go-ambari-rest/releases/download/${ambari_cli_version}/ambari-cli_linux_amd64",
-              user        => 'root',
+              ensure => 'present',
+              source => "https://github.com/disaster37/go-ambari-rest/releases/download/${ambari_cli_version}/ambari-cli_linux_amd64",
+              user   => 'root',
             }
             file { '/usr/bin/ambari-cli_linux_amd64':
-                ensure => 'present',
-                mode   => '0755',
+                ensure  => 'present',
+                mode    => '0755',
                 require => Archive['/usr/bin/ambari-cli_linux_amd64']
             }
         }

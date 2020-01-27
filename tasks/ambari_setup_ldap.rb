@@ -31,13 +31,12 @@ def ambari_setup_ldap(
 
   # Check the ambari version for retro compatibility
   result_ambari_version = `ambari-server --version`
-  if(result_ambari_version =~ /^2.6.*$/)
-    puts("Ambari 2.6 detected")
+  if result_ambari_version =~ %r{^2.6.*$}
+    puts('Ambari 2.6 detected')
     is_old_version = true
   else
     is_old_version = false
   end
-  
 
   # It force prompt the secondary if we set nothink
   if ldap_secondary_url.nil?
@@ -50,7 +49,7 @@ def ambari_setup_ldap(
   cmd_string << " --ldap-url=#{ldap_url}" unless ldap_url.nil?
   cmd_string << " --ldap-secondary-url=#{ldap_secondary_url}" unless ldap_secondary_url.nil?
   cmd_string << " --ldap-ssl=#{ldap_ssl}" unless ldap_ssl.nil?
-  cmd_string << " --ldap-type=#{ldap_type}" unless (ldap_type.nil? || is_old_version)
+  cmd_string << " --ldap-type=#{ldap_type}" unless ldap_type.nil? || is_old_version
   cmd_string << " --ldap-user-class=#{ldap_user_class}" unless ldap_user_class.nil?
   cmd_string << " --ldap-user-attr=#{ldap_user_attr}" unless ldap_user_attr.nil?
   cmd_string << " --ldap-group-class=#{ldap_group_class}" unless ldap_group_class.nil?
@@ -64,10 +63,10 @@ def ambari_setup_ldap(
   cmd_string << " --ldap-manager-password=#{ldap_manager_password}" unless ldap_manager_password.nil?
   cmd_string << ' --ldap-save-settings' if ldap_save_settings
   cmd_string << " --ldap-sync-username-collisions-behavior=#{ldap_collision}" unless ldap_collision.nil?
-  cmd_string << " --ldap-force-lowercase-usernames=#{ldap_lowercase}" unless (ldap_lowercase.nil? || is_old_version)
-  cmd_string << " --ldap-pagination-enabled=#{ldap_pagination}" unless (ldap_pagination.nil? || is_old_version)
-  cmd_string << " --ambari-admin-username=#{ambari_login}" unless (ambari_login.nil? || is_old_version)
-  cmd_string << " --ambari-admin-password=#{ambari_password}" unless (ambari_password.nil? || is_old_version)
+  cmd_string << " --ldap-force-lowercase-usernames=#{ldap_lowercase}" unless ldap_lowercase.nil? || is_old_version
+  cmd_string << " --ldap-pagination-enabled=#{ldap_pagination}" unless ldap_pagination.nil? || is_old_version
+  cmd_string << " --ambari-admin-username=#{ambari_login}" unless ambari_login.nil? || is_old_version
+  cmd_string << " --ambari-admin-password=#{ambari_password}" unless ambari_password.nil? || is_old_version
   cmd_string << " --truststore-type=#{truststore_type}" unless truststore_type.nil?
   cmd_string << " --truststore-path=#{truststore_path}" unless truststore_path.nil?
   cmd_string << " --truststore-password=#{truststore_password}" unless truststore_password.nil?

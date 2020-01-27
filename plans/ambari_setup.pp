@@ -23,7 +23,7 @@ plan hm_ambari::ambari_setup (
     Boolean                         $enable_ldap            = true,
     Optional[String]                $ldap_url               = undef,
     Optional[String]                $ldap_secondary_url     = undef,
-    Optional[Enum['true', 'false']] $ldap_ssl               = 'true',
+    Optional[Enum[true, false]] $ldap_ssl               = true,
     Optional[String]                $ldap_type              = 'AD',
     Optional[String]                $ldap_user_class        = 'person',
     Optional[String]                $ldap_user_attr         = 'sAMAccountName',
@@ -33,7 +33,7 @@ plan hm_ambari::ambari_setup (
     Optional[String]                $ldap_dn                = 'distunguishedName',
     Optional[String]                $ldap_base_dn           = undef,
     Optional[String]                $ldap_referral          = 'follow',
-    Optional[Enum['true', 'false']] $ldap_bind_anonym       = 'false',
+    Optional[Enum[true, false]] $ldap_bind_anonym       = false,
     Optional[String]                $ldap_manager_dn        = undef,
     Optional[String]                $ldap_manager_password  = undef,
     Optional[Boolean]               $ldap_save_settings     = true,
@@ -81,7 +81,7 @@ plan hm_ambari::ambari_setup (
             err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
-    
+
     # Init database
     $r2 = run_task(
         'hm_ambari::ambari_init_database',
@@ -102,7 +102,7 @@ plan hm_ambari::ambari_setup (
             err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
-    
+
     # Encrypt password in setting file
     $r3 = run_task(
         'hm_ambari::ambari_encrypt_password',
@@ -118,7 +118,7 @@ plan hm_ambari::ambari_setup (
             err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
-    
+
     # Setup JDBC driver
     $r4 = run_task(
         'hm_ambari::ambari_setup_jdbc',
@@ -135,10 +135,10 @@ plan hm_ambari::ambari_setup (
             err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
-    
+
     # Setup HTTPS
     if $enable_https == true {
-    
+
         # Enable HTTPS
         $r_setup_https = run_task(
             'hm_ambari::ambari_setup_https',
@@ -158,7 +158,7 @@ plan hm_ambari::ambari_setup (
             }
         }
     }
-    
+
     # Setup truststore
     if $truststore_path != undef {
         $r_setup_truststore = run_task(
@@ -179,7 +179,7 @@ plan hm_ambari::ambari_setup (
             }
         }
     }
-    
+
     # Add mpacks Mpack
     $mpacks_url.each |$mpack_url| {
         $r_setup_mpack = run_task(
@@ -200,7 +200,7 @@ plan hm_ambari::ambari_setup (
             }
         }
     }
-    
+
     # Start Ambari server
     $r_start_service = run_task(
         'service',
@@ -217,7 +217,7 @@ plan hm_ambari::ambari_setup (
             err("${node} errored with a message: ${result.error.message}\n${result.message}")
         }
     }
-    
+
     # Setup LDAP
     if $enable_ldap == true {
         $r_setup_ldap = run_task(
@@ -247,7 +247,7 @@ plan hm_ambari::ambari_setup (
             truststore_type         => 'jks',
             truststore_path         => '/etc/ambari-server/truststore.jks',
             truststore_password     => $truststore_password
-            
+
         )
         $r_setup_ldap.each |$result| {
             $node = $result.target.name
@@ -257,7 +257,7 @@ plan hm_ambari::ambari_setup (
                 err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
-        
+
         $r_restart_service = run_task(
             'service',
             $nodes,
@@ -274,9 +274,9 @@ plan hm_ambari::ambari_setup (
             }
         }
     }
-    
-    
+
+
     notice('Don\'t forget to put `hm_ambari::server::$service_ensure = \'running\'`')
-    
+
 
 }
