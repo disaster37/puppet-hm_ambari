@@ -29,7 +29,7 @@ def ambari_add_mpack(mpack_file, mpack_url, proxy_url, proxy_user, proxy_passwor
 end
 
 def download(url, path, proxy_url, proxy_user, proxy_password)
-  if proxy_url.nil? || proxy_url == ""
+  if proxy_url.nil? || proxy_url == ''
     case io = open(url)
     when StringIO then File.open(path, 'w') { |f| f.write(io) }
     when Tempfile

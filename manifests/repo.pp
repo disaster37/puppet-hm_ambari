@@ -10,8 +10,8 @@ class hm_ambari::repo {
         include '::archive'
 
         archive { '/etc/yum.repos.d/ambari.repo':
-          source      => "http://public-repo-1.hortonworks.com/ambari/centos${::operatingsystemmajrelease}/${repo_version}.x/updates/${ambari_version}/ambari.repo",
-          user        => 'root',
+          source => "http://public-repo-1.hortonworks.com/ambari/centos${::operatingsystemmajrelease}/${repo_version}.x/updates/${ambari_version}/ambari.repo",
+          user   => 'root',
         }
     }
     else {

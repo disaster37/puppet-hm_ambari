@@ -45,7 +45,9 @@ describe 'ambari server tasks' do
     end
 
     it 'set yum proxy' do
-      shell('echo "proxy=${http_proxy}" >> /etc/yum.conf')
+      if !ENV['http_proxy'].nil? && ENV['http_proxy'] != ''
+       shell('echo "proxy=${http_proxy}" >> /etc/yum.conf')
+      end
     end
 
     it 'runs successfully' do
@@ -93,7 +95,7 @@ describe 'ambari server tasks' do
     end
 
     it 'execute Ambari add mpack' do
-      if ENV['http_proxy'].nil?
+      if ENV['http_proxy'].nil? || ENV['http_proxy'] == ''
         result = run_task(
           task_name: 'hm_ambari::ambari_add_mpack',
           params: 'mpack_url=http://public-repo-1.hortonworks.com/HDP-SOLR/hdp-solr-ambari-mp/solr-service-mpack-3.0.0.tar.gz',
