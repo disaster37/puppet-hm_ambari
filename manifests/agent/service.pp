@@ -1,3 +1,10 @@
+# hm_ambari::agent::service
+#
+# Manage the service for ambari agent
+#
+# @summary Ambari agent service handler
+#
+#
 class hm_ambari::agent::service {
 
     $real_service_ensure    = $hm_ambari::agent::real_service_ensure

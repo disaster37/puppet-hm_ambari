@@ -1,3 +1,9 @@
+# hm_ambari::server::setup
+#
+# Manage the setup to lauch task
+#
+# @summary Ambari server setup handler
+#
 class hm_ambari::server::setup {
     $ambari_cli_version = $hm_ambari::server::ambari_cli_version
     $directory_ensure   = $hm_ambari::server::directory_ensure

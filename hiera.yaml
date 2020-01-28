@@ -1,0 +1,12 @@
+---
+version: 5
+defaults:
+  data_hash: yaml_data
+  datadir: data
+ 
+# The default values can be merged if you want to extend with additional packages
+# If not, use 'default_hierarchy' instead of 'hierarchy'
+#
+hierarchy:
+- name: 'Common'
+  glob: '*.yaml'

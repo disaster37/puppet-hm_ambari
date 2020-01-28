@@ -1,3 +1,13 @@
+# hm_ambari::repo
+#
+# Manaage the Yum repository to install Ambari / HDP
+#
+# @summary Ambari repo handler
+#
+# @example
+#   class {'hm_ambari::repo:
+#   }
+#
 class hm_ambari::repo {
 
 

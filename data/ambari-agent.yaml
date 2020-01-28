@@ -1,0 +1,9 @@
+---
+hm_ambari::agent::package_ensure: 'present'
+hm_ambari::agent::service_ensure: 'running'
+hm_ambari::agent::service_enable: true
+hm_ambari::agent::ambari_server_port: 8440
+hm_ambari::agent::ambari_server_secure_port: 8441
+hm_ambari::agent::ambari_server: 'localhost'
+hm_ambari::agent::ambari_agent_settings: {}
+hm_ambari::agent::ambari_agent_alias: null

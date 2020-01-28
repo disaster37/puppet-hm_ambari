@@ -1,3 +1,9 @@
+# hm_ambari::server::python
+#
+# Manage the config file for ambari server
+#
+# @summary Ambari server config file handler
+#
 class hm_ambari::server::python {
 
     # Disable python security

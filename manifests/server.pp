@@ -1,18 +1,74 @@
+# hm_ambari::server
+#
+# Ambari server
+#
+# @summary Ambari server
+#
+# @example
+#   class {'hm_ambari::server':
+#   }
+#
+# @param service_ensure
+#   Start or stop service
+#   Default value is set to `running`
+#
+# @param service_enable
+#    Enable or disable service
+#    Default value is set to `true`
+#
+# @param package_ensure
+#   Set the package version
+#   Default value is set to `present`
+#
+# @param ambari_server_settings
+#   Set custom settings on ambari server config file
+#   Default value is set to `{}`
+#
+# @param server_agent_ssl
+#   Encrypt communication between agent and server
+#   Default value is set to `false`
+#
+# @param disable_python_security
+#   Disable secrutity on python. It's needed to use some scripts provided with Ambari
+#   Default value is set to `true`
+#
+# @param ambari_cli_version
+#   Set the version to ambari cli version to use when call with Ambari API
+#   Default value is set to `1.0.4-2`
+#
+# @param install_ambari_cli
+#   Install the ambari cli to call with Ambari API
+#   Default value is set to `true`
+#
+# @param hdp_privileges
+#   Create HDP privilege template file that you can use with task
+#   Default value is set to `{}`
+#
+# @param hdp_repositories
+#   Create HDP repository template file that you can use with task
+#   Default value is set to `{}`
+#
+# @param hdp_blueprint
+#   Create HDP blueprint template file that you can use with task
+#   Default value is set to `{}`
+#
+# @param hdp_hosts_template
+#   Create HDP host template file that you can use with task
+#   Default value is set to `{}`
 class hm_ambari::server(
-  Variant[Boolean, Enum['stopped', 'running']]  $service_ensure             = $hm_ambari::params::server_service_ensure,
-  Boolean                                       $service_enable             = $hm_ambari::params::server_service_enable,
-  String                                        $package_ensure             = $hm_ambari::params::server_package_ensure,
-  Hash[String, Hash]                            $ambari_server_settings     = $hm_ambari::params::ambari_server_settings,
-  Boolean                                       $server_agent_ssl           = $hm_ambari::params::server_agent_ssl,
-  Boolean                                       $disable_python_security    = $hm_ambari::params::disable_python_security,
-  String                                        $ambari_cli_version         = $hm_ambari::params::ambari_cli_version,
-  Boolean                                       $install_ambari_cli         = $hm_ambari::params::install_ambari_cli,
-  Hash                                          $hdp_privileges             = $hm_ambari::params::hdp_privileges,
-  Hash                                          $hdp_repositories           = $hm_ambari::params::hdp_repositories,
-  Hash                                          $hdp_blueprint              = $hm_ambari::params::hdp_blueprint,
-  Hash                                          $hdp_hosts_template         = $hm_ambari::params::hdp_hosts_template,
-
-) inherits hm_ambari::params {
+  Stdlib::Ensure::Service                       $service_ensure,
+  Boolean                                       $service_enable,
+  String                                        $package_ensure,
+  Hash[String, Hash]                            $ambari_server_settings,
+  Boolean                                       $server_agent_ssl,
+  Boolean                                       $disable_python_security,
+  String                                        $ambari_cli_version,
+  Boolean                                       $install_ambari_cli,
+  Hash                                          $hdp_privileges,
+  Hash                                          $hdp_repositories,
+  Hash                                          $hdp_blueprint,
+  Hash                                          $hdp_hosts_template,
+){
 
     if $package_ensure == 'absent' {
         $real_service_ensure    = 'stopped'

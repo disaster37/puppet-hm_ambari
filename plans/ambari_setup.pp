@@ -1,29 +1,29 @@
 plan hm_ambari::ambari_setup (
     TargetSpec $nodes,
-    String                          $java_home              = '/usr/lib/jvm/java',
+    Stdlib::Absolutepath            $java_home              = '/usr/lib/jvm/java',
     String                          $db_type,
-    String                          $db_host,
-    Integer                         $db_port,
+    Stdlib::Host                    $db_host,
+    Stdlib::Port                    $db_port,
     String                          $db_name,
     String                          $db_user,
     String                          $db_password,
     String                          $master_key,
-    String                          $jdbc_driver_path,
+    Stdlib::Absolutepath            $jdbc_driver_path,
     Boolean                         $enable_https           = true,
-    Optional[String]                $cert_key_path          = undef,
-    Optional[String]                $cert_crt_path          = undef,
-    Optional[Integer]               $api_ssl_port           = 8443,
+    Optional[Stdlib::Absolutepath]  $cert_key_path          = undef,
+    Optional[Stdlib::Absolutepath]  $cert_crt_path          = undef,
+    Optional[Stdlib::Port]          $api_ssl_port           = 8443,
     Optional[String]                $cert_alias             = 'ambari',
-    Optional[String]                $truststore_path        = undef,
+    Optional[Stdlib::Absolutepath]  $truststore_path        = undef,
     Optional[String]                $truststore_password    = 'ambari',
-    Array[String]                   $mpacks_url             = [],
-    Optional[String]                $proxy_url              = undef,
+    Array[Stdlib::HTTPUrl]          $mpacks_url             = [],
+    Optional[Stdlib::HTTPUrl]       $proxy_url              = undef,
     Optional[String]                $proxy_user             = undef,
     Optional[String]                $proxy_password         = undef,
     Boolean                         $enable_ldap            = true,
     Optional[String]                $ldap_url               = undef,
     Optional[String]                $ldap_secondary_url     = undef,
-    Optional[Enum[true, false]] $ldap_ssl               = true,
+    Optional[Enum[true, false]]     $ldap_ssl               = true,
     Optional[String]                $ldap_type              = 'AD',
     Optional[String]                $ldap_user_class        = 'person',
     Optional[String]                $ldap_user_attr         = 'sAMAccountName',
@@ -33,7 +33,7 @@ plan hm_ambari::ambari_setup (
     Optional[String]                $ldap_dn                = 'distunguishedName',
     Optional[String]                $ldap_base_dn           = undef,
     Optional[String]                $ldap_referral          = 'follow',
-    Optional[Enum[true, false]] $ldap_bind_anonym       = false,
+    Optional[Enum[true, false]]     $ldap_bind_anonym       = false,
     Optional[String]                $ldap_manager_dn        = undef,
     Optional[String]                $ldap_manager_password  = undef,
     Optional[Boolean]               $ldap_save_settings     = true,
@@ -173,9 +173,9 @@ plan hm_ambari::ambari_setup (
         $r_setup_truststore.each |$result| {
             $node = $result.target.name
             if $result.ok {
-               notice("${node} successed with a value: ${result.message}")
+              notice("${node} successed with a value: ${result.message}")
             } else {
-                err("${node} errored with a message: ${result.error.message}\n${result.message}")
+              err("${node} errored with a message: ${result.error.message}\n${result.message}")
             }
         }
     }
