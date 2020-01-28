@@ -47,7 +47,7 @@ class hm_ambari::agent(
   Stdlib::Port                                  $ambari_server_port,
   Stdlib::Port                                  $ambari_server_secure_port,
   Stdlib::Host                                  $ambari_server,
-  Enum['present', 'absent']                     $package_ensure,
+  String                                        $package_ensure,
   Hash[String, Hash]                            $ambari_agent_settings,
   Optional[String]                              $ambari_agent_alias,
 ) {
