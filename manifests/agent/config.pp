@@ -1,3 +1,9 @@
+# hm_ambari::agent::config
+#
+# Manage the config file for ambari agent
+#
+# @summary Ambari agent config file handler
+#
 class hm_ambari::agent::config {
 
     $ambari_agent_settings      = $hm_ambari::agent::ambari_agent_settings

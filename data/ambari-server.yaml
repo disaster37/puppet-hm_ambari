@@ -1,0 +1,13 @@
+---
+hm_ambari::server::package_ensure: 'present'
+hm_ambari::server::service_ensure: 'stopped'
+hm_ambari::server::service_enable: true
+hm_ambari::server::server_agent_ssl: false
+hm_ambari::server::ambari_server_settings: {}
+hm_ambari::server::disable_python_security: true
+hm_ambari::server::ambari_cli_version: '1.0.4-2'
+hm_ambari::server::install_ambari_cli: true
+hm_ambari::server::hdp_privileges: {}
+hm_ambari::server::hdp_repositories: {}
+hm_ambari::server::hdp_blueprint: {}
+hm_ambari::server::hdp_hosts_template: {}

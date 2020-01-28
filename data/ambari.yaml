@@ -1,0 +1,6 @@
+---
+hm_ambari::ambari_version: '2.7.3.0'
+hm_ambari::manage_repo: true
+hm_ambari::manage_java: true
+hm_ambari::global_resources_ensure: 'present'
+hm_ambari::service_provider: 'systemd'

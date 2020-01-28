@@ -46,7 +46,7 @@ describe 'ambari server tasks' do
 
     it 'set yum proxy' do
       if !ENV['http_proxy'].nil? && ENV['http_proxy'] != ''
-       shell('echo "proxy=${http_proxy}" >> /etc/yum.conf')
+        shell('echo "proxy=${http_proxy}" >> /etc/yum.conf')
       end
     end
 

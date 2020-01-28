@@ -1,13 +1,56 @@
+# hm_ambari::agent
+#
+# Ambari agent
+#
+# @summary Ambari agent
+#
+# @example
+#   class {'hm_ambari::agent':
+#     ambari_server => 'ambari-server.domain.com',
+#   }
+#
+# @param service_ensure
+#   Start or stop service
+#   Default value is set to `running`
+
+# @param service_enable
+#    Enable or disable service
+#    Default value is set to `true`
+#
+# @param ambari_server_port
+#    Set the ambari server port
+#    Default value is set to `8440`
+#
+# @param ambari_server_secure_port
+#   Set the ambari server secure port
+#   Default value is set to `8441`
+#
+# @param ambari_server
+#   Set the ambari serveur host name to connect on it
+#   Default value is set to `localhost`
+#
+# @param package_ensure
+#   Set the package version
+#   Default value is set to `present`
+#
+# @param ambari_agent_settings
+#   Set custom settings on ambari agent config file
+#   Default value is set to `{}`
+#
+# @param ambari_agent_alias
+#   Set the alias name for ambari agent
+#   Default value is set to `undef`
+#
 class hm_ambari::agent(
-  Variant[Boolean, Enum['stopped', 'running']]  $service_ensure             = $hm_ambari::params::agent_service_ensure,
-  Boolean                                       $service_enable             = $hm_ambari::params::agent_service_enable,
-  String                                        $ambari_server_port         = $hm_ambari::params::ambari_server_port,
-  String                                        $ambari_server_secure_port  = $hm_ambari::params::ambari_server_secure_port,
-  String                                        $ambari_server              = $hm_ambari::params::ambari_server,
-  Optional[String]                              $ambari_agent_alias         = $hm_ambari::params::ambari_agent_alias,
-  Enum['present', 'absent']                     $package_ensure             = $hm_ambari::params::agent_package_ensure,
-  Hash[String, Hash]                            $ambari_agent_settings      = $hm_ambari::params::ambari_agent_settings,
-) inherits hm_ambari::params {
+  Stdlib::Ensure::Service                       $service_ensure,
+  Boolean                                       $service_enable,
+  Stdlib::Port                                  $ambari_server_port,
+  Stdlib::Port                                  $ambari_server_secure_port,
+  Stdlib::Host                                  $ambari_server,
+  Enum['present', 'absent']                     $package_ensure,
+  Hash[String, Hash]                            $ambari_agent_settings,
+  Optional[String]                              $ambari_agent_alias,
+) {
 
 
     include hm_ambari

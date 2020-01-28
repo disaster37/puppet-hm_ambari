@@ -1,3 +1,9 @@
+# hm_ambari::server::config
+#
+# Manage the config file for ambari server
+#
+# @summary Ambari server config file handler
+#
 class hm_ambari::server::config{
     $file_ensure            = $hm_ambari::server::file_ensure
     $server_agent_ssl       = $hm_ambari::server::server_agent_ssl
