@@ -105,7 +105,7 @@ describe 'ambari server tasks' do
         proxy = uri.scheme + '://' + uri.host + ':' + uri.port.to_s
         result = run_task(
           task_name: 'hm_ambari::ambari_add_mpack',
-          params: 'mpack_url=http://public-repo-1.hortonworks.com/HDP-SOLR/hdp-solr-ambari-mp/solr-service-mpack-3.0.0.tar.gz proxy_url=' + proxy + ' proxy_user=' + uri.user + ' proxy_password=' + uri.password,
+          params: 'mpack_url=http://public-repo-1.hortonworks.com/HDP-SOLR/hdp-solr-ambari-mp/solr-service-mpack-3.0.0.tar.gz proxy_url=' + proxy + ' proxy_user=' + uri.user + ' proxy_password=' + uri.password, # lint:ignore:140chars
         )
       end
 
@@ -135,7 +135,7 @@ describe 'ambari server tasks' do
       shell('ambari-server start')
       result = run_task(
         task_name: 'hm_ambari::ambari_setup_ldap',
-        params: 'ldap_type=AD ldap_url=dc.domain.com:389 ldap_ssl=false ldap_user_class=person ldap_user_attr=sAMAccountName ldap_group_class=group ldap_group_attr=cn ldap_member_attr=member ldap_dn=distunguishedName ldap_base_dn=HM.DM.AD ldap_referral=follow ldap_bind_anonym=false ldap_manager_dn=test ldap_manager_password=test ldap_save_settings=true ldap_collision=convert ldap_lowercase=true admin_user=admin admin_password=admin',
+        params: 'ldap_type=AD ldap_url=dc.domain.com:389 ldap_ssl=false ldap_user_class=person ldap_user_attr=sAMAccountName ldap_group_class=group ldap_group_attr=cn ldap_member_attr=member ldap_dn=distunguishedName ldap_base_dn=HM.DM.AD ldap_referral=follow ldap_bind_anonym=false ldap_manager_dn=test ldap_manager_password=test ldap_save_settings=true ldap_collision=convert ldap_lowercase=true admin_user=admin admin_password=admin', # lint:ignore:140chars
       )
       expect_multiple_regexes(result: result, regexes: [%r{Ambari Server 'setup-ldap' completed successfully}])
     end
@@ -160,7 +160,7 @@ describe 'ambari server tasks' do
     it 'execute HDP deploy cluster' do
       result = run_task(
         task_name: 'hm_ambari::hdp_deploy_cluster',
-        params: 'ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test blueprint_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_blueprint.json host_template_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_hoststemplate_spec.json',
+        params: 'ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test blueprint_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_blueprint.json host_template_file=/etc/puppetlabs/code/modules/hm_ambari/tests/hdp_hoststemplate_spec.json', # lint:ignore:140chars
       )
       expect_multiple_regexes(result: result, regexes: [%r{Cluster created successfully}])
     end
@@ -185,7 +185,7 @@ describe 'ambari server tasks' do
     it 'execute HDP enable kerberos' do
       result = run_task(
         task_name: 'hm_ambari::hdp_enable_kerberos',
-        params: 'ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test kdc_type=mit-kdc kdc_hosts=centos-7-x64 realm=TEST.LOCAL admin_server_host=centos-7-x64 principal_name=admin/admin@TEST.LOCAL principal_password=adminadmin domains=test.local,.test.local disable_manage_krb5_conf=true',
+        params: 'ambari_url=https://127.0.0.1:8443/api/v1 ambari_login=admin ambari_password=admin cluster_name=test kdc_type=mit-kdc kdc_hosts=centos-7-x64 realm=TEST.LOCAL admin_server_host=centos-7-x64 principal_name=admin/admin@TEST.LOCAL principal_password=adminadmin domains=test.local,.test.local disable_manage_krb5_conf=true', #lint:ignore:140chars
       )
       # We just test if syntax is right
       expect_multiple_regexes(result: result, regexes: [%r{Kerberos is enabled}])
