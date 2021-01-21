@@ -12,7 +12,7 @@
     },
     {
       "name": "puppetlabs-inifile",
-      "version_requirement": ">= 2.1.1 < 4.0.0"
+      "version_requirement": ">= 2.1.1 < 6.0.0"
     },
     {
       "name": "puppet-archive",
