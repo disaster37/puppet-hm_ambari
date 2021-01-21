@@ -16,7 +16,7 @@
     },
     {
       "name": "puppet-archive",
-      "version_requirement": ">= 3.2.1 < 4.0.0"
+      "version_requirement": ">= 3.2.1 < 6.0.0"
     },
     {
       "name": "puppetlabs-java",
